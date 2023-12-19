@@ -6,14 +6,14 @@
 
 ///// PARAMETROS CONFIGURABLES /////
 
-const char* ssid = "SSID";            // Nombre de tu SSID
-const char* password = "PASSWORD";    // Contraseña de tu SSID
+const char* ssid = "SSID";              // Nombre de tu SSID
+const char* password = "PASSWORD";      // Contraseña de tu SSID
 const char* mqtt_server = "XXX.XXX.X.XX";  // I.P. de tu servidor MQTT
-int mqttport = 1883;                       // Puerto para MQTT
-const char* mqttusuario = "MQTT";          // Usuario MQTT en Home Assistant
-const char* mqttpass = "PASS_MQTT";             // Contraseña para el usuario MQTT en Home Assistant
-const char* OTA_password = "PASS_OTA";         // Contraseña OTA
-#define CLIENT_ID "Luz_XXX"               // ID del dispositivo, debe ser único en tu sistema
+int mqttport = 1883;                    // Puerto para MQTT
+const char* mqttusuario = "MQTT";       // Usuario MQTT en Home Assistant
+const char* mqttpass = "PASS_MQTT";     // Contraseña para el usuario MQTT en Home Assistant
+const char* OTA_password = "PASS_OTA";  // Contraseña OTA
+#define CLIENT_ID "Luz_XXX"             // ID del dispositivo, debe ser único en tu sistema
 #define MQTT_TOPIC1 "luces/1"              // Topic luz Nº1
 #define MQTT_TOPIC2 "luces/2"              // Topic luz Nº2
 #define MQTT_TOPIC3 "luces/3"              // Topic luz Nº3
