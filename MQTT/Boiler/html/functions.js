@@ -1,7 +1,28 @@
 // Called after form input is processed
 function startConnect() {
-	document.getElementById("boilerStatus").style.color="#3d434c";
-	// TODO:
+    document.getElementById("boilerStatus").style.color = "#3d434c";
+
+    // Generate a random client ID
+    var clientID = "clientID-" + parseInt(Math.random() * 1000);
+
+    // Fetch the hostname/IP address and port number from the form
+    var host = "192.168.1.100"; //document.getElementById("host").value;
+    var port = "8080"; 			//document.getElementById("port").value;
+
+    // Print output for the user in the messages div
+    var messagesDiv = document.getElementById("messages");
+    messagesDiv.innerHTML += '<span>Connecting to: ' + host + ' on port: ' + port + '</span><br/>';
+    messagesDiv.innerHTML += '<span>Using the following client value: ' + clientID + '</span><br/>';
+
+    // Initialize new Paho client connection, callback handlers
+    var client = new Paho.MQTT.Client(host, Number(port), clientID);
+    client.onConnectionLost = onConnectionLost;
+    client.onMessageArrived = onMessageArrived;
+
+    // Connect the client, if successful, call onConnect function
+    client.connect({
+        onSuccess: onConnect,
+    });
 }
 
 // Called when the client connects
