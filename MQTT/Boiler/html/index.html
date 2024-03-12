@@ -3,7 +3,7 @@
 	<head>
       <meta charset="utf-8">
 	  <meta name="viewport" content="initial-scale=1, width=device-width">
-      <title>Servidor de Casa MQTT</title>
+      <title>Servidor MQTT</title>
       <link rel="stylesheet" href="style.css">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
       <script src="functions.js" type="text/javascript"></script>
@@ -11,9 +11,8 @@
 	<body>
 	<div class="content">
 		<div class="title">
-		<h1>TIZA & TIZON'S PLACE</h1>
+		<h1>MQTT Application</h1>
 		</div>
-		
 		<input type="button" class = "button_large" onclick="startConnect()" value="Conectar">
 		<input type="button" class = "button_large" onclick="startDisconnect()" value="Desconectar">
 		<div class="property">
@@ -94,7 +93,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>Comienzo Programada:</td>
+					<td>Comienzo Programa:</td>
 					<td><textarea rows="1" class="areaoftext" cols="7" id="startTimeSelect"></textarea>
 					</td>
 					<td>
@@ -102,7 +101,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>Fin Programada:</td>
+					<td>Fin Programa:</td>
 					<td><textarea rows="1" class="areaoftext" cols="7" id="stopTimeSelect"></textarea>
 					</td>
 					<td>

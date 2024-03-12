@@ -116,7 +116,6 @@ function startDisconnect() {
     document.getElementById("messages").innerHTML += '<span>Disconnected</span><br/>';
 }
 
-
 // Updates #messages div to auto-scroll
 function updateScroll() {
     var element = document.getElementById("messages");
