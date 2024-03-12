@@ -46,7 +46,6 @@ function onConnect() {
     client.send(message2);
 }
 
-
 // Called when the client loses its connection
 function onConnectionLost(responseObject) {
     document.getElementById("messages").innerHTML += '<span>ERROR: Connection lost</span><br/>';
@@ -110,34 +109,50 @@ function onMessageArrived(message) {
     }
 }
 
-
-// set temperature
-function setUserTemp(){
-	document.getElementById("boilerStatus").style.color="#3d434c";
-}
-
-// set temperature
-function setBackTemp(){
-	document.getElementById("boilerStatus").style.color="#3d434c";
-}
-
-// set time
-function setStartTime(){
-	document.getElementById("boilerStatus").style.color="#3d434c";
-}
-
-// set time
-function setStopTime(){
-    document.getElementById("boilerStatus").style.color="#3d434c";
-}
-
 // Called when the disconnection button is pressed
 function startDisconnect() {
-	document.getElementById("boilerStatus").style.color="#3d434c";
+    document.getElementById("boilerStatus").style.color = "#3d434c";
+    client.disconnect();
+    document.getElementById("messages").innerHTML += '<span>Disconnected</span><br/>';
 }
+
 
 // Updates #messages div to auto-scroll
 function updateScroll() {
     var element = document.getElementById("messages");
     element.scrollTop = element.scrollHeight;
+}
+
+// userTempSelect, backTempSelect
+function setUserTemp(){
+	document.getElementById("boilerStatus").style.color="#3d434c";
+	var sel = Number(document.getElementById("userTempSelect").value) + 16;
+	message = new Paho.MQTT.Message(sel.toString());
+	message.destinationName = "home/params/set/user_temp";
+	client.send(message);
+}
+
+function setBackTemp(){
+	document.getElementById("boilerStatus").style.color="#3d434c";
+	var sel = Number(document.getElementById("backTempSelect").value) + 14;
+	message = new Paho.MQTT.Message(sel.toString());
+	message.destinationName = "home/params/set/back_temp";
+	client.send(message);
+}
+
+// startTimeSelect, stopTimeSelect
+function setStartTime(){
+	document.getElementById("boilerStatus").style.color="#3d434c";
+	var sel = document.getElementById("startTimeSelect").value;
+	message = new Paho.MQTT.Message(sel);
+	message.destinationName = "home/params/set/start_time";
+	client.send(message);
+}
+
+function setStopTime(){
+	document.getElementById("boilerStatus").style.color="#3d434c";
+	var sel = document.getElementById("stopTimeSelect").value;
+	message = new Paho.MQTT.Message(sel);
+	message.destinationName = "home/params/set/stop_time";
+	client.send(message);
 }
