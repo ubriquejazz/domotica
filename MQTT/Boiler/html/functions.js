@@ -57,17 +57,59 @@ function onConnectionLost(responseObject) {
 
 // Called when a message arrives
 function onMessageArrived(message) {
+    // Log the received message payload to the console
     console.log("onMessageArrived: " + message.payloadString);
-	topic = message.destinationName;
-	value = message.payloadString;
-	var date = new Date();
-    document.getElementById("messages").innerHTML +=
-		'<span>'+ date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() +
-		"-" + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ": " +
-		topic + '  | ' + value + '</span><br/>';
     
-    // TODO:
+    // Extract topic and payload value from the message
+    var topic = message.destinationName;
+    var value = message.payloadString;
+    
+    // Get the current date and time
+    var date = new Date();
+    
+    // Append message information to the messages element
+    var messagesDiv = document.getElementById("messages");
+    messagesDiv.innerHTML +=
+        '<span>' + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() +
+        "-" + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + ": " +
+        topic + '  | ' + value + '</span><br/>';
+
+    // Call the updateScroll function
+    updateScroll();
+    
+    // Update specific HTML elements based on the received topic and value
+    switch (topic) {
+        case "home/params/status/start_time":
+            document.getElementById("startTime").innerHTML = value;
+            break;
+        case "home/params/status/stop_time":
+            document.getElementById("stopTime").innerHTML = value;
+            break;
+        case "home/params/status/user_temp":
+            document.getElementById("userTemp").innerHTML = value + ' ºC';
+            break;
+        case "home/params/status/back_temp":
+            document.getElementById("backTemp").innerHTML = value + ' ºC';
+            break;
+        case "home/params/status/curr_temp":
+            document.getElementById("currentTemp").innerHTML = value + ' ºC';
+            break;
+        case "home/relay/status":
+            document.getElementById("boilerStatus").innerHTML = value;
+            if (value == "OFF") {
+                document.getElementById("boilerStatus").style.color = "#dd0000";
+            } else if (value == "ON") {
+                document.getElementById("boilerStatus").style.color = "#00dd00";
+            } else {
+                document.getElementById("boilerStatus").style.color = "#3d434c";
+            }
+            break;
+        default:
+            // Handle other topics if needed
+            break;
+    }
 }
+
 
 // set temperature
 function setUserTemp(){
