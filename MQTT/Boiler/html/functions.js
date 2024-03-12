@@ -27,9 +27,25 @@ function startConnect() {
 
 // Called when the client connects
 function onConnect() {
-	document.getElementById("boilerStatus").style.color="#3d434c";
-    // TODO: 
+    document.getElementById("boilerStatus").style.color = "#3d434c";
+
+    // Print output for the user in the messages div
+    var messagesDiv = document.getElementById("messages");
+    messagesDiv.innerHTML += '<span>Subscribing to: home/#</span><br/>';
+
+    // Subscribe to the requested topic
+    client.subscribe("home/#");
+
+    // Send update commands
+    var message1 = new Paho.MQTT.Message("1");
+    message1.destinationName = "home/relay/get";
+    client.send(message1);
+
+    var message2 = new Paho.MQTT.Message("1");
+    message2.destinationName = "home/params/get";
+    client.send(message2);
 }
+
 
 // Called when the client loses its connection
 function onConnectionLost(responseObject) {
