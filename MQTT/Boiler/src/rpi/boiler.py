@@ -2,7 +2,6 @@ import logging
 import json
 import os
 import time
-import pytz # timezone calculations 
 from datetime import datetime
 
 import paho.mqtt.client as mqtt
@@ -62,7 +61,6 @@ def on_message(client, userdata, message):
         data = json.loads(msg)
         try:
             cursor = conn.cursor()
-            now_sql2 = datetime.now(pytz.timezone('UTC'))
             now_str2 = now_sql2.strftime('%Y-%m-%d %H:%M:%S')
             query = "INSERT INTO " + POSTGRES_ROOM + \
                         "(temperature, humidity, timestamp)" + \
