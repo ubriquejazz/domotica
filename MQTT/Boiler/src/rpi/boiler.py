@@ -1,7 +1,6 @@
 import logging
 import json
-import os
-import time
+import time as t
 from datetime import datetime
 
 import paho.mqtt.client as mqtt
@@ -64,11 +63,12 @@ def on_message(client, userdata, message):
             f.write(conf_str)
             f.close()
 
+print(dic)
 print("**************** Automatic Boiler program ***************")
 
 # Configuration
 UPDATE_MINUTE = 2
-DHT_SENSOR = Adafruit_DHT.DHT22
+DHT_SENSOR = 11
 DHT_PIN_DATA = 4
 DHT_PIN_POWER = 27
 client = mqtt.Client("RPi")
@@ -132,8 +132,8 @@ while True:
     # Wait
     GPIO.output(DHT_PIN_POWER, GPIO.LOW)
     while True:
-        time.sleep(1)
+        t.sleep(1)
         now = datetime.now()
-        if ((now.minute % 10) == UPDATE_MINUTE) and (now.second == 0):
+        if ((now.minute % UPDATE_MINUTE) == 0) and (now.second == 0):
             break
 
