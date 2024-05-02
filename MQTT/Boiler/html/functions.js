@@ -95,9 +95,9 @@ function onMessageArrived(message) {
             break;
         case "home/relay/status":
             document.getElementById("boilerStatus").innerHTML = value;
-            if (value == false) {
+            if (value == "OFF") {
                 document.getElementById("boilerStatus").style.color = "#dd0000";
-            } else if (value == true) {
+            } else if (value == "ON") {
                 document.getElementById("boilerStatus").style.color = "#00dd00";
             } else {
                 document.getElementById("boilerStatus").style.color = "#3d434c";

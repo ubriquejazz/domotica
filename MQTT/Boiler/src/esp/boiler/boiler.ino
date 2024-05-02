@@ -70,9 +70,9 @@ void callback(char* topic, byte* payload, unsigned int length)
     if (strcmp(topic, "home/relay/set") == 0){
         // Switch on the LED if an 1 was received as first character
         if ((char)payload[0] == '1') {
-        digitalWrite(RELAY, LOW); 
+            digitalWrite(RELAY, LOW); 
         } else if ((char)payload[0] == '0'){
-        digitalWrite(RELAY, HIGH); 
+            digitalWrite(RELAY, HIGH); 
         }
     }
     if(digitalRead(RELAY) == LOW){

@@ -55,7 +55,7 @@ def on_message(client, userdata, message):
         client.publish("home/params/status/back_temp", controller.get_back_temp())
     elif message.topic == "home/relay/status":
         logging.info("Boiler Feedback: " + str(message.payload.decode("utf-8")))
-        client.publish("home/relay/status", boiler_st);
+        # client.publish("home/relay/status", boiler_st);
     
     if set_flag == True:
         conf_str = json.dumps(dic, indent=4)
