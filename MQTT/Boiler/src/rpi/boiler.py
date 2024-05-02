@@ -14,6 +14,7 @@ with open('conf.json', 'r') as f:
     f.close()
 
 controller = Controller.fromdict(dic)
+boiler_st = None
 
 def on_message(client, userdata, message):
     set_flag = False
@@ -55,22 +56,8 @@ def on_message(client, userdata, message):
         client.publish("home/params/status/back_temp", controller.get_back_temp())
     elif message.topic == "home/relay/status":
         logging.info("Boiler Feedback: " + str(message.payload.decode("utf-8")))
-    elif message.topic == "home/room/status":
-        msg = message.payload.decode("utf-8")
-        logging.info("Room Status: " + str(msg))
-        data = json.loads(msg)
-        try:
-            cursor = conn.cursor()
-            now_str2 = now_sql2.strftime('%Y-%m-%d %H:%M:%S')
-            query = "INSERT INTO " + POSTGRES_ROOM + \
-                        "(temperature, humidity, timestamp)" + \
-                        "VALUES (" + str(round(data["temp"],1)) + "," + str(round(data["hum"],1)) + \
-                        ",\'" + now_str2 + "\'" ");"
-            cur.execute(query)
-        except Exception as e:
-            log_str += " DBError"
-            print(e)
-
+        client.publish("home/relay/status", boiler_st);
+    
     if set_flag == True:
         conf_str = json.dumps(dic, indent=4)
         with open('conf.json', 'w') as f:
@@ -89,7 +76,7 @@ client.connect("localhost")
 client.subscribe("home/relay/status")
 client.subscribe("home/params/set/#")
 client.subscribe("home/params/get")
-client.subscribe("home/room/status")
+#client.subscribe("home/room/status")
 client.on_message = on_message
 client.loop_start()
 
@@ -106,7 +93,6 @@ now_str = now.strftime("%Y%m%d_%H%M%S")
 log_file = "../../logs/boiler_" + now_str + ".log"
 logging.basicConfig(filename = log_file, level = logging.INFO)
 print("- File " + log_file + " created")
-boiler_st = None
 
 # Main loop
 while True:
@@ -134,16 +120,17 @@ while True:
             client.publish("home/relay/set", 0)
             log_str += " OFF"
             boiler_st = False
+        elif signal == ControlResult.ERROR:
+            log_str += " ERROR"
 
     else:
         log_str += " Failed to retrieve data from sensor"
 
-    # Print
+    # Print logs
     logging.info(log_str)
 
     # Wait
     GPIO.output(DHT_PIN_POWER, GPIO.LOW)
-
     while True:
         time.sleep(1)
         now = datetime.now()

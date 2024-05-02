@@ -6,7 +6,7 @@ function startConnect() {
     var clientID = "clientID-" + parseInt(Math.random() * 1000);
 
     // Fetch the hostname/IP address and port number from the form
-    var host = "192.168.1.100"; //document.getElementById("host").value;
+    var host = "192.168.1.98";  //document.getElementById("host").value;
     var port = "8080"; 			//document.getElementById("port").value;
 
     // Print output for the user in the messages div
@@ -38,7 +38,7 @@ function onConnect() {
 
     // Send update commands
     var message1 = new Paho.MQTT.Message("1");
-    message1.destinationName = "home/relay/get";
+    message1.destinationName = "home/relay/status";
     client.send(message1);
 
     var message2 = new Paho.MQTT.Message("1");
@@ -95,9 +95,9 @@ function onMessageArrived(message) {
             break;
         case "home/relay/status":
             document.getElementById("boilerStatus").innerHTML = value;
-            if (value == "OFF") {
+            if (value == false) {
                 document.getElementById("boilerStatus").style.color = "#dd0000";
-            } else if (value == "ON") {
+            } else if (value == true) {
                 document.getElementById("boilerStatus").style.color = "#00dd00";
             } else {
                 document.getElementById("boilerStatus").style.color = "#3d434c";
