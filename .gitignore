@@ -1,5 +1,7 @@
 # Prerequisites
 *.d
+/data
+/sandbox
 
 # Compiled Object files
 *.slo

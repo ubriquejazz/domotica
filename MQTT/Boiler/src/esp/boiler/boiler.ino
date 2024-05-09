@@ -1,4 +1,4 @@
-#include <ESP8266WiFi.h>
+#include <WiFi.h>
 #include <PubSubClient.h>
 #include "config.h"
 
@@ -20,7 +20,7 @@ IPAddress subnet(255,255,255,0);
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-void configureWifi() {
+void configureWifi(int led) {
     delay(5);
     Serial.println();
     Serial.print("Connecting to ");
@@ -35,9 +35,9 @@ void configureWifi() {
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
         Serial.print(".");
-        digitalWrite(LED, !digitalRead(LED));
+        digitalWrite(led, !digitalRead(led));
     }
-    digitalWrite(LED, LOW);
+    digitalWrite(led, LOW);
     Serial.println();
     Serial.println("WiFi connected");
 }
@@ -49,9 +49,7 @@ void setup() {
     digitalWrite(LED, HIGH);
     pinMode(RELAY, OUTPUT);
     digitalWrite(RELAY, HIGH);
-
-    // WiFi
-    configureWifi();
+    configureWifi(LED);
 
     // MQTT comm
     client.setServer(MQTT_SERVER, MQTT_SERVER_PORT);
@@ -70,9 +68,12 @@ void callback(char* topic, byte* payload, unsigned int length)
     if (strcmp(topic, "home/relay/set") == 0){
         // Switch on the LED if an 1 was received as first character
         if ((char)payload[0] == '1') {
+            digitalWrite(LED, HIGH); 
             digitalWrite(RELAY, LOW); 
         } else if ((char)payload[0] == '0'){
+            digitalWrite(LED, LOW); 
             digitalWrite(RELAY, HIGH); 
+            
         }
     }
     if(digitalRead(RELAY) == LOW){
