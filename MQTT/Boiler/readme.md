@@ -56,7 +56,7 @@ Button on the web browser to read the config file (connect).
 Command to turn the relay on (user temperature simulation).
 
 ```
-mosquitto_pub -t 'home/relay/set' 1
+mosquitto_pub -t 'home/relay/set' -m 1
 ```
 
 ### Scenario 3

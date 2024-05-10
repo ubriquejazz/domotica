@@ -1,3 +1,5 @@
+var client = null;
+
 // Called after form input is processed
 function startConnect() {
     document.getElementById("boilerStatus").style.color = "#3d434c";
@@ -15,7 +17,7 @@ function startConnect() {
     messagesDiv.innerHTML += '<span>Using the following client value: ' + clientID + '</span><br/>';
 
     // Initialize new Paho client connection, callback handlers
-    var client = new Paho.MQTT.Client(host, Number(port), clientID);
+    client = new Paho.MQTT.Client(host, Number(port), clientID);
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
 
@@ -37,11 +39,11 @@ function onConnect() {
     client.subscribe("home/#");
 
     // Send update commands
-    var message1 = new Paho.MQTT.Message("1");
+    var message1 = new Paho.MQTT.Message("OFF");
     message1.destinationName = "home/relay/status";
     client.send(message1);
 
-    var message2 = new Paho.MQTT.Message("1");
+    var message2 = new Paho.MQTT.Message("");
     message2.destinationName = "home/params/get";
     client.send(message2);
 }
