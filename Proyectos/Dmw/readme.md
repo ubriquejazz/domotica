@@ -10,7 +10,7 @@ The iFM has set up a ‘DMW factory’ production line which first featured at D
 
 ### Job Tracking
 
-- Barcode scanner + ESP32 + Battery
+- Scanner = ESP32-Cam + Battery
 - Impresora de etiquetas portatil (BLE)
 
 ## Software
@@ -21,5 +21,5 @@ The iFM has set up a ‘DMW factory’ production line which first featured at D
     3. Packaging
     4. Completed
 
-- Barcode scanner with MQTT clients to publish -t "home/newJob" -m "11022033044"
+- Scanner with MQTT clients to publish -t "home/newJob" -m "11022033044"
 
