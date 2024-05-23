@@ -2,17 +2,8 @@
 
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
-#include <ArduinoOTA.h>
+#include "config.h"
 
-///// PARAMETROS CONFIGURABLES /////
-
-const char* ssid = "SSID";                 // Nombre de tu SSID
-const char* password = "PASSWORD";         // Contraseña de tu SSID
-const char* mqtt_server = "XXX.XXX.X.XX";  // I.P de tu servidor MQTT
-int mqttport = 1883;                       // Puerto para MQTT
-const char* mqttusuario = "MQTT";          // Usuario MQTT en Home Assistant
-const char* mqttpass = "PASS_MQTT";        // Contraseña para el usuario MQTT en Home Assistant
-const char* OTA_password = "PASS_OTA";     // Contraseña OTA
 #define CLIENT_ID "Persiana_Sala"          // debe ser único en tu sistema
 #define MQTT_TOPIC "persianas/sala"        // debe que ser el mismo que tengas en configuration.yaml
 
@@ -86,32 +77,12 @@ void setup() {
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
 
-  // OTA setup
-  ArduinoOTA.setHostname(CLIENT_ID);
-  ArduinoOTA.setPassword(OTA_password);
-  ArduinoOTA.onStart([]() {
-    Serial.println("Start");
-  });
-  ArduinoOTA.onEnd([]() {
-    Serial.println("\nEnd");
-  });
-  ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
-    Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
-  });
-  ArduinoOTA.onError([](ota_error_t error) {
-    Serial.printf("Error[%u]: ", error);
-    if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
-    else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
-    else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
-    else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
-    else if (error == OTA_END_ERROR) Serial.println("End Failed");
-  });
-  ArduinoOTA.begin();
 
   Serial.println("'Setup' finalizado ");
 }
+
 void loop() {
-  ArduinoOTA.handle();
+  
 
   ///// INTENTAMOS CONECTAR A WIFI, SI NO CONECTA, ESPERAMOS UN TIEMPO /////
 
@@ -363,6 +334,7 @@ void parada() {
   subiendo = false;
   bajando = false;
 }
+
 void reconnect() {
 
   while ((!client.connected()) && (flancomqtt == true)) {
