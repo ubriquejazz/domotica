@@ -35,16 +35,39 @@ const char* topic = MQTT_TOPIC "/comando";
 const char* topic_set = MQTT_TOPIC "/set_position";
 const char* topic_pos = MQTT_TOPIC "/position";
 
+void setup_wifi() {
+  delay(5);
+  Serial.println();
+  Serial.print("Conectando a ");
+  Serial.println(ssid);
+
+  // Static IP
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    for (int i = 0; i <= 50; i++) {
+      delay(10);
+      if (i == 50) {
+        Serial.println(".");
+      } else {
+        Serial.print(".");
+      }
+    }
+  }
+  Serial.println("");
+  Serial.println("WiFi conectado");
+  Serial.println("Dirección IP: ");
+  Serial.println(WiFi.localIP());
+}
+
 void setup() {
   Serial.begin(9600);
-  Serial.println("setup begin");
-  digitalWrite(relay1, HIGH);
-  digitalWrite(relay2, HIGH);
-  pinMode(relay1, OUTPUT);
-  pinMode(relay2, OUTPUT);
   delay(10);
-
-  //inicia wifi y mqqt
+  pinMode(relay1, OUTPUT);
+  digitalWrite(relay1, HIGH);
+  pinMode(relay2, OUTPUT);
+  digitalWrite(relay2, HIGH);
   setup_wifi();
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
@@ -129,32 +152,6 @@ void loop() {
       parada();
     }
   }
-}
-
-
-void setup_wifi() {
-  delay(10);
-  // Nos conectamos a la Red
-  Serial.println();
-  Serial.print("Conectando a ");
-  Serial.println(ssid);
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-
-  while (WiFi.status() != WL_CONNECTED) {
-    for (int i = 0; i <= 50; i++) {
-      delay(10);
-      if (i == 50) {
-        Serial.println(".");
-      } else {
-        Serial.print(".");
-      }
-    }
-  }
-  Serial.println("");
-  Serial.println("WiFi conectado");
-  Serial.println("Dirección IP: ");
-  Serial.println(WiFi.localIP());
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
