@@ -24,16 +24,7 @@ Configuración que debes poner en el archivo mqtt.yaml
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <ArduinoOTA.h>
-
-const char* ssid  = "SSID"; // Nombre de nuestra red Wifi
-const char* password = "CONTRASEÑA"; // Contraseña de nuestra ede Wifi
-const char* mqtt_server = "XXX.XXX.X.XX"; // I.P. de nuestro servidor MQTT (Home Assistant)
-int mqttport = 1883;
-const char* mqttusuario = "MQTT"; // Nombre de usuario MQTT en Home Assistant
-const char* mqttpass = "XXX"; // Contraseña para el usuario de MQTT
-#define CLIENT_ID   "Puerta_Garaje"  // Nombre que le queramos dar al dispositivo                 
-#define MQTT_TOPIC  "garaje"         // Topic raíz
-#define LUZ   "garaje/luces/comando" // Topic para encender la luz del garaje si la tenemos domotizada
+#include "config.h"
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -73,7 +64,6 @@ const char* topic_comando = MQTT_TOPIC"/puerta/comando"; //comando
 void setup(){
   Serial.begin(9600);
   Serial.println("setup begin");
-
  
   digitalWrite(relay1, HIGH);     
   pinMode(relay1, OUTPUT);
@@ -84,8 +74,6 @@ void setup(){
 
   valAbierta= digitalRead(botonAbierta);
   valCerrada= digitalRead(botonCerrada);
- 
-
 
   setup_wifi(); 
   client.setServer(mqtt_server, 1883);
@@ -115,26 +103,21 @@ void setup(){
   Serial.println("setup end");
  }
 
-
 void loop(){
-   ArduinoOTA.handle();
+  ArduinoOTA.handle();
 
-      //PUERTA ABIERTA//
-    valAbierta= digitalRead(botonAbierta);
+  //PUERTA ABIERTA//
+  valAbierta= digitalRead(botonAbierta);
       
   if ((valAbierta == LOW) && (old_valAbierta == 1)){ // flanco de 1 a 0
     tiempopuertaabierta = millis();  // inicias la cuenta      
     flancopuertaabierta = true; 
-     
-   }
+  }
   else if ((valAbierta == HIGH) && (old_valAbierta == 0 )){ // flanco de 1 a 0
     tiempopuertacerrada = millis();  // inicias la cuenta      
-    flancopuertacerrada = true; 
-   
-   }
-
-
- old_valAbierta = valAbierta;        // guardo ultimo cambio
+    flancopuertacerrada = true;  
+  }
+  old_valAbierta = valAbierta;        // guardo ultimo cambio
 
  if (flancopuertaabierta &&(valAbierta == LOW))     // durante el tiempo que val1 esta en LOW
     if (millis()-tiempopuertaabierta >= tiempomax1){ // se supero el segundo?
@@ -226,11 +209,9 @@ void loop(){
            client.publish(LUZ, "1", true);
            Serial.println(estadoPuerta);
            flancoEstadoAbriendo = false;
-
- 
- }  
+    }  
       old_estadoCerrada = estadoCerrada;  
-
+    
   if (WiFi.status() != WL_CONNECTED) {
     setup_wifi();
     reconnect();
@@ -245,6 +226,9 @@ void loop(){
   client.loop();
  }
 
+/*
+*
+*/
 void abrir(){
   if ((AbrirPuerta == 1) && (estadoPuerta == "3")){
      digitalWrite(relay1, LOW);
@@ -313,8 +297,10 @@ void abrir(){
     
   }
 
+/**
+ * 
+*/
 void cerrar(){
-
   if ((CerrarPuerta == 1) && (estadoPuerta == "1")){
      digitalWrite(relay1, LOW);
      delay(500);
@@ -382,6 +368,10 @@ void cerrar(){
     }
     
    }
+
+/**
+ * 
+ */   
 void parar(){
 
    if ((Parar == "1") && (estadoPuerta == "2") && (estadoParada == "0")){
@@ -410,6 +400,10 @@ void parar(){
     }
     
  }
+
+/*
+* 
+*/ 
 void setup_wifi() {
   delay(10);
   // We start by connecting to a WiFi network
@@ -436,6 +430,9 @@ void setup_wifi() {
   Serial.println(WiFi.localIP());
  }
 
+/*
+* This routine jump up when a message appears
+*/
 void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
   Serial.print(topic);
@@ -466,6 +463,10 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
  }
 
+
+/**
+ * 
+*/
 void reconnect() {
   // Loop until we're reconnected
   while (!client.connected()) {
