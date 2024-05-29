@@ -7,6 +7,7 @@
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+void helper_setup();
 void helper_loop();
 void subscribe_topics();
 
@@ -40,10 +41,7 @@ void setup_wifi() {
 void setup() {
   Serial.begin(9600);
   delay(10);
-  pinMode(RLAY1, OUTPUT);
-  digitalWrite(RLAY1, HIGH);
-  pinMode(RLAY2, OUTPUT);
-  digitalWrite(RLAY2, HIGH);
+  helper_setup();
   setup_wifi();
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);

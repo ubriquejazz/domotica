@@ -1,11 +1,9 @@
-//// https://www.youtube.com/@ArduBrico ////
-
 #include "common.ino"
 
 #define TIME_UP     30000   // tiempo que tarda la persiana en subir
 #define TIME_DOWN   30000   // tiempo que tarda la persiana en bajar
-#define RLAY1       13;     // Lo conectamos a D7
-#define RLAY2       12;     // Lo conectamos a D6
+#define RLAY1       13      // Lo conectamos a D7
+#define RLAY2       12      // Lo conectamos a D6
 
 // **** Globals **** //
 int position_desired;     // actualizado por callback
@@ -23,6 +21,13 @@ void subscribe_topics() {
   client.subscribe(MQTT_TOPIC "/comando");
   client.subscribe(MQTT_TOPIC "/set_position");
   client.subscribe(MQTT_TOPIC "/position");
+}
+
+void helper_setup() {
+  pinMode(RLAY1, OUTPUT);
+  digitalWrite(RLAY1, HIGH);
+  pinMode(RLAY2, OUTPUT);
+  digitalWrite(RLAY2, HIGH);
 }
 
 void helper_loop() {
