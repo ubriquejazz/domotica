@@ -2,12 +2,13 @@
 
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
-#include "config.h"
+#include "../data/config.h"
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-void mierda();
+void helper_loop();
+void subscribe_topics();
 
 void setup_wifi() {
   delay(5);
@@ -20,6 +21,7 @@ void setup_wifi() {
   WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED) {
+    // 500 ms to give ESP time to connect (otherwise you get soft WDT reset)
     for (int i = 0; i <= 50; i++) {
       delay(10);
       if (i == 50) {
@@ -60,7 +62,7 @@ void loop() {
     reconnect();
   }
   client.loop();
-  mierda();
+  helper_loop();
 }
 
 void reconnect() {
@@ -71,9 +73,8 @@ void reconnect() {
     if (client.connect(CLIENT_ID, mqttusuario, mqttpass)) {
       Serial.println("connected");
       delay(20);
-      client.subscribe(MQTT_TOPIC "/comando");
-      client.subscribe(MQTT_TOPIC "/set_position");
-      client.subscribe(MQTT_TOPIC "/position");
+      subscribe_topics();
+      //subscribe relay to MQTT server...
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());

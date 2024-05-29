@@ -19,7 +19,13 @@ unsigned long tiempoAnterior3 = 0;
 unsigned long tiempoAnterior4 = 0;
 unsigned long periodo3, periodo4;
 
-void mierda() {
+void subscribe_topics() {
+  client.subscribe(MQTT_TOPIC "/comando");
+  client.subscribe(MQTT_TOPIC "/set_position");
+  client.subscribe(MQTT_TOPIC "/position");
+}
+
+void helper_loop() {
   static int pos_str;
   static unsigned long start2;
 
