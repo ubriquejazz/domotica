@@ -1,20 +1,16 @@
-///// https://www.youtube.com/@ArduBrico ////
-
-#include <ESP8266WiFi.h>
-#include <PubSubClient.h>
-#include "config.h"
+#include "common.ino"
 
 #define CLIENT_ID "Persiana_Sala"          // debe ser único en tu sistema
 #define MQTT_TOPIC "persianas/sala"        // debe que ser el mismo que tengas en configuration.yaml
 
-const int relay1 = 13;    // Relé subir lo conectamos a D7
-const int relay2 = 12;    // Relé bajar lo conectamos a D6
-const int Pul_subir = 5;  // Pulsador subir lo conectamos a  D1
-const int Pul_bajar = 4;  // Pulsador bajar lo conectamos a  D2
+#define RLAY1       13    // Lo conectamos a D7
+#define RLAY2       12    // Lo conectamos a D6
+#define SW_UP       5     // Pulsador subir lo conectamos a  D1
+#define SW_DOWN     4     // Pulsador bajar lo conectamos a  D2
 
-unsigned long periodo_subir = 15000;  // tiempo que tarda la persiana en subir
-unsigned long periodo_bajar = 15000;  // tiempo que tarda la persiana en bajar
-int RECONECT = 20;                    // Segundos hasta nuevo intento de conexión
+#define TIME_UP     15000   // tiempo que tarda la persiana en subir
+#define TIME_DOWN   15000   // tiempo que tarda la persiana en bajar
+#define RECONECT    20      // Segundos hasta nuevo intento de conexión
 
 ///// FIN DE PARAMETROS CONFIGURABLES /////
 
@@ -63,25 +59,16 @@ const char* topic = MQTT_TOPIC "/comando";
 const char* topic_set = MQTT_TOPIC "/set_position";
 const char* topic_pos = MQTT_TOPIC "/position";
 
-void setup() {
-  Serial.begin(9600);
-  Serial.println("Iniciando...");
-  digitalWrite(relay1, HIGH);  // Iniciamos los relés apagados, cambiar a LOW si funciona a la inversa
-  digitalWrite(relay2, HIGH);  // Iniciamos los relés apagados, cambiar a LOW si funciona a la inversa
-  pinMode(relay1, OUTPUT);
-  pinMode(relay2, OUTPUT);
-  pinMode(Pul_subir, INPUT_PULLUP);  // Utilizamos la resistencia interna de la placa
-  pinMode(Pul_bajar, INPUT_PULLUP);  // Utilizamos la resistencia interna de la placa
-  delay(10);
-
-  client.setServer(mqtt_server, 1883);
-  client.setCallback(callback);
-
-
-  Serial.println("'Setup' finalizado ");
+void helper_setup() {
+  digitalWrite(RLAY1, HIGH);  // Cambiar a LOW si funciona a la inversa
+  digitalWrite(RLAY2, HIGH);  // Cambiar a LOW si funciona a la inversa
+  pinMode(RLAY1, OUTPUT);
+  pinMode(RLAY2, OUTPUT);
+  pinMode(SW_UP, INPUT_PULLUP);   // Utilizamos la resistencia interna de la placa
+  pinMode(SW_DOWN, INPUT_PULLUP); // Utilizamos la resistencia interna de la placa
 }
 
-void loop() {
+void helper_loop() {
   
 
   ///// INTENTAMOS CONECTAR A WIFI, SI NO CONECTA, ESPERAMOS UN TIEMPO /////
@@ -108,7 +95,7 @@ void loop() {
 
   ///// PULSADOR SUBIR ////
 
-  val1 = digitalRead(Pul_subir);
+  val1 = digitalRead(SW_UP);
 
   if (!val1 && old_val1) {
     tiempo1 = millis();
@@ -128,7 +115,7 @@ void loop() {
 
   ///// PULSADOR BAJAR ////
 
-  val2 = digitalRead(Pul_bajar);
+  val2 = digitalRead(SW_DOWN);
 
   if (!val2 && old_val2) {
     tiempo2 = millis();
@@ -178,10 +165,10 @@ void loop() {
   ///// ACTIVAR CONTADOR PORCENTAJE ////
 
   if (temp_subir_p == 1 && (position_str > position_real)) {
-    periodo3 = ((position_str - position_real) * periodo_subir / 100);
+    periodo3 = ((position_str - position_real) * TIME_UP / 100);
     pos_str = position_str;
-    digitalWrite(relay1, LOW);
-    digitalWrite(relay2, HIGH);
+    digitalWrite(RLAY1, LOW);
+    digitalWrite(RLAY2, HIGH);
     Serial.println("SUBIENDO");
     subiendo = true;
     bajando = false;
@@ -192,11 +179,11 @@ void loop() {
     temp_subir_p = 0;
     temp_bajar_p = 0;
   } else if (temp_bajar_p == 1 && (position_real > position_str)) {
-    periodo4 = ((position_real - position_str) * periodo_bajar / 100);
+    periodo4 = ((position_real - position_str) * TIME_DOWN / 100);
     pos_real = position_real;
     pos_str = position_str;
-    digitalWrite(relay1, HIGH);
-    digitalWrite(relay2, LOW);
+    digitalWrite(RLAY1, HIGH);
+    digitalWrite(RLAY2, LOW);
     Serial.println("BAJANDO");
     subiendo = false;
     bajando = true;
@@ -214,7 +201,7 @@ void loop() {
 
     currentMillis = millis();
     if (currentMillis - start2 > 200UL) {
-      int subiendo_str = (pos_str - (periodo3 + tiempoAnterior3 - currentMillis) * 100 / periodo_subir);
+      int subiendo_str = (pos_str - (periodo3 + tiempoAnterior3 - currentMillis) * 100 / TIME_UP);
       char message[10];
       snprintf(message, 10, "%d", subiendo_str);
       position_real = subiendo_str;
@@ -233,7 +220,7 @@ void loop() {
 
     currentMillis = millis();
     if (currentMillis - start2 > 200UL) {
-      int bajando_str = (pos_str + ((periodo4 + tiempoAnterior4 - currentMillis) * 100 / periodo_bajar));
+      int bajando_str = (pos_str + ((periodo4 + tiempoAnterior4 - currentMillis) * 100 / TIME_DOWN));
       char message[10];
       snprintf(message, 10, "%d", bajando_str);
       position_real = bajando_str;
@@ -314,8 +301,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
 }
 
 void parada() {
-  digitalWrite(relay2, HIGH);
-  digitalWrite(relay1, HIGH);
+  digitalWrite(RLAY2, HIGH);
+  digitalWrite(RLAY1, HIGH);
   position_str = position_real;
   Serial.println("PARADA");
   String position_ = String(position_real);
