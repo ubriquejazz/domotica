@@ -1,4 +1,5 @@
   cover:
+
     - name: "Persiana Sala"
       unique_id: "Persiana_Sala"
       device_class: blind
@@ -6,6 +7,27 @@
       state_topic: "persianas/sala/estado"
       position_topic: "persianas/sala/position"
       set_position_topic: "persianas/sala/set_position"
+      qos: 0
+      retain: false
+      payload_open: "subiendo"
+      payload_close: "bajando"
+      payload_stop: "parada"
+      position_open: 100
+      position_closed: 0      
+      state_open: "subida"
+      state_opening: "subiendo"
+      state_closed: "bajada"
+      state_stopped: "parada"
+      state_closing: "bajando" 
+      optimistic: true 
+
+    - name: "Persiana Habitacion"
+      unique_id: "Persiana_Habitacion"
+      device_class: blind
+      command_topic: "persianas/room/comando"
+      state_topic: "persianas/room/estado"
+      position_topic: "persianas/room/position"
+      set_position_topic: "persianas/room/set_position"
       qos: 0
       retain: false
       payload_open: "subiendo"
