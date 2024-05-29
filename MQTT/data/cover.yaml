@@ -1,5 +1,22 @@
   cover:
 
+    - name: "Garaje"
+      unique_id: "Puerta_Garaje"
+      device_class: garage
+      command_topic: "garaje/puerta/comando"
+      state_topic: "garaje/puerta/estado"
+      qos: 0
+      retain: true
+      payload_open: "1"
+      payload_close: "2"
+      payload_stop: "3"
+      state_open: "1"
+      state_opening: "2"
+      state_closed: "3"
+      state_closing: "4"
+      state_stopped: "5"
+      optimistic: true
+      
     - name: "Persiana Sala"
       unique_id: "Persiana_Sala"
       device_class: blind
