@@ -3,9 +3,6 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include "config.h"
-
-#define CLIENT_ID   "Persiana_Sala"   // ID único en tu sistema
-#define MQTT_TOPIC  "persianas/sala"  // mismo que tengas en configuration.yaml
 #define TIME_UP     30000   // tiempo que tarda la persiana en subir
 #define TIME_DOWN   30000   // tiempo que tarda la persiana en bajar
 #define RLAY1       13;     // Lo conectamos a D7
