@@ -1,6 +1,3 @@
-
-//########## VISITA WWW.YOUTUBE.COM/@ARDUBRICO ##########//
-
 /* Copia y pega el siguiente código en la configuración de mqtt dentro de tu Home Assitant:    
   
   sensor:  
@@ -11,16 +8,8 @@
 
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
-#include <ArduinoOTA.h>
+#include "../data/config.h"
 
-const char* ssid  = "DJuan"; //Nombre de tu red wifi
-const char* password = "483828869562v"; // Contraseña de la red wifi
-const char* mqtt_server = "192.168.1.19"; // IP de tu servidor MQTT
-int mqttport = 1883;
-const char* mqttusuario = "MQTT"; // Usuario para MQTT en Home Assistant
-const char* mqttpass = "9562"; // Contraseña del usuario MQTT en Home Assistant
-#define CLIENT_ID   "Sensor_Lluvia" // Nombre único para el dispositivo
-#define MQTT_TOPIC  "sensores/lluvia" //topic raíz
 #define SensorAnalog A0
 
 WiFiClient espClient;
@@ -32,61 +21,32 @@ int llueve = 0;
 int no_llueve = 0;
 
 void setup() {
- 
   Serial.begin(9600);
   Serial.println("Iniciando");
   delay(10);
- 
   setup_wifi(); 
-  client.setServer(mqtt_server, mqttport);
-
-   ArduinoOTA.setHostname(CLIENT_ID);
-   ArduinoOTA.onStart([]() {
-    Serial.println("Start");
-  });
-  ArduinoOTA.onEnd([]() {
-    Serial.println("\nEnd");
-  });
-  ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
-    Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
-  });
-  ArduinoOTA.onError([](ota_error_t error) {
-    Serial.printf("Error[%u]: ", error);
-    if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
-    else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
-    else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
-    else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
-    else if (error == OTA_END_ERROR) Serial.println("End Failed");
-  });
-  ArduinoOTA.begin();
-
-  Serial.println("########## VISITA WWW.YOUTUBE.COM/@ARDUBRICO ##########");
+  client.setServer(mqtt_server, 1883);
 }
+
 void loop() {
-  ArduinoOTA.handle();
-    
-  int SensorAnalogVal = analogRead(SensorAnalog);
-   
-   if (WiFi.status() != WL_CONNECTED) {
+  if (WiFi.status() != WL_CONNECTED) {
    setup_wifi();
    reconnect();
-   client.setServer(mqtt_server, mqttport);
+   client.setServer(mqtt_server, 1883);
   } 
-  
-   if (!client.connected()) {
+  if (!client.connected()) {
    reconnect();
   }
   
-   if ((SensorAnalogVal<valor)){
+  int SensorAnalogVal = analogRead(SensorAnalog); 
+  if ((SensorAnalogVal<valor)){
    estado = 1;
    delay(100);     
- }
-
-   if ((SensorAnalogVal>valor)){
+  }
+  if ((SensorAnalogVal>valor)){
    estado = 0;
    delay(100);     
- }
-
+  }
   if ((estado==1)&&(llueve==0)){
     Serial.println("Llueve");
     Serial.println (SensorAnalogVal);
@@ -95,7 +55,6 @@ void loop() {
     no_llueve = 0;
     delay(100);
   }
-
   if ((estado==0)&&(no_llueve==0)){
     Serial.println("No llueve");
     Serial.println (SensorAnalogVal);
@@ -132,7 +91,6 @@ void setup_wifi() {
   Serial.println("Dirección IP: ");
   Serial.println(WiFi.localIP());
 }
-
 
 void reconnect() {
   // Loop until we're reconnected
