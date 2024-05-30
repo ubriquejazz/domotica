@@ -193,174 +193,167 @@ void loop(){
 */
 void abrir(){
   if ((AbrirPuerta == 1) && (estadoPuerta == "3")){
-     digitalWrite(RLAY1, LOW);
-     delay(500);
-     digitalWrite(RLAY1, HIGH);  
-     delay(10);   
-     AbrirPuerta = 0;
-     estadoParada = "0";
-     Serial.println("abriendo desde cerrada");
-     Serial.println(estadoParada);
-     }
- else if ((AbrirPuerta == 1) && (estadoParada == "paraBajada")){
-     digitalWrite(RLAY1, LOW);
-     delay(500);
-     digitalWrite(RLAY1, HIGH);  
-     delay(10);   
-     AbrirPuerta = 0;
-     estadoParada = "0";
-     estadoPuerta = "2";
-     Serial.println("abriendo desde parada");
-     Serial.println(estadoParada);
-     client.publish(MQTT_TOPIC"/puerta/estado", estadoPuerta, true);
-     }
-
- else if ((AbrirPuerta == 1) && (estadoParada == "paraSubida") && (estadoPuerta == "5")){
-     digitalWrite(RLAY1, LOW);
-     delay(500);
-     digitalWrite(RLAY1, HIGH); 
-     delay(500);
-     digitalWrite(RLAY1, LOW);
-     delay(500);
-     digitalWrite(RLAY1, HIGH); 
-     delay(10); 
-     digitalWrite(RLAY1, LOW);
-     delay(500);
-     digitalWrite(RLAY1, HIGH); 
-     delay(10); 
-     AbrirPuerta = 0;
-     estadoParada = "0";
-     estadoPuerta = "2";
-     Serial.println("abriendo desde parada subiendo");
-     Serial.println(estadoParada);
-     client.publish(MQTT_TOPIC"/puerta/estado", estadoPuerta, true);
-     }
-
- else if ((AbrirPuerta == 1) && (estadoPuerta == "4") && (estadoAbierta == 0)){
-         digitalWrite(RLAY1, LOW);
-         delay(500);
-         digitalWrite(RLAY1, HIGH); 
-         delay(500);
-         digitalWrite(RLAY1, LOW);
-         delay(500);
-         digitalWrite(RLAY1, HIGH); 
-         delay(10);  
-         AbrirPuerta = 0; 
-         estadoPuerta = "2";
-         estadoParada = "0";
-         Serial.println("abriendo desde bajando");
-         Serial.println(estadoParada);
-         client.publish(MQTT_TOPIC"/puerta/estado", estadoPuerta, true);
-    } else {
-      //estadoParada = "0";
-      delay(10); 
-      
-    }
+    digitalWrite(RLAY1, LOW);
+    delay(500);
+    digitalWrite(RLAY1, HIGH);  
+    delay(10);   
+    AbrirPuerta = 0;
+    estadoParada = "0";
+    Serial.println("abriendo desde cerrada");
+    Serial.println(estadoParada);
+  }
+  else if ((AbrirPuerta == 1) && (estadoParada == "paraBajada")){
+    digitalWrite(RLAY1, LOW);
+    delay(500);
+    digitalWrite(RLAY1, HIGH);  
+    delay(10);   
+    AbrirPuerta = 0;
+    estadoParada = "0";
+    estadoPuerta = "2";
+    Serial.println("abriendo desde parada");
+    Serial.println(estadoParada);
+    client.publish(MQTT_TOPIC"/puerta/estado", estadoPuerta, true);
+  }
+  else if ((AbrirPuerta == 1) && (estadoParada == "paraSubida") && (estadoPuerta == "5")){
+    digitalWrite(RLAY1, LOW);
+    delay(500);
+    digitalWrite(RLAY1, HIGH); 
+    delay(500);
+    digitalWrite(RLAY1, LOW);
+    delay(500);
+    digitalWrite(RLAY1, HIGH); 
+    delay(10); 
+    digitalWrite(RLAY1, LOW);
+    delay(500);
+    digitalWrite(RLAY1, HIGH); 
+    delay(10); 
+    AbrirPuerta = 0;
+    estadoParada = "0";
+    estadoPuerta = "2";
+    Serial.println("abriendo desde parada subiendo");
+    Serial.println(estadoParada);
+    client.publish(MQTT_TOPIC"/puerta/estado", estadoPuerta, true);
+  }
+  else if ((AbrirPuerta == 1) && (estadoPuerta == "4") && (estadoAbierta == 0)){
+    digitalWrite(RLAY1, LOW);
+    delay(500);
+    digitalWrite(RLAY1, HIGH); 
+    delay(500);
+    digitalWrite(RLAY1, LOW);
+    delay(500);
+    digitalWrite(RLAY1, HIGH); 
+    delay(10);  
+    AbrirPuerta = 0; 
+    estadoPuerta = "2";
+    estadoParada = "0";
+    Serial.println("abriendo desde bajando");
+    Serial.println(estadoParada);
+    client.publish(MQTT_TOPIC"/puerta/estado", estadoPuerta, true);
+  } else {
+    //estadoParada = "0";
+    delay(10); 
     
   }
+}
 
 /**
  * 
 */
 void cerrar(){
   if ((CerrarPuerta == 1) && (estadoPuerta == "1")){
-     digitalWrite(RLAY1, LOW);
-     delay(500);
-     digitalWrite(RLAY1, HIGH);  
-     delay(10);   
-     CerrarPuerta = 0;
-     Parar = "0";
-     Serial.println("cerrando desde abierta");
-     Serial.println(estadoParada);
-     }
+    digitalWrite(RLAY1, LOW);
+    delay(500);
+    digitalWrite(RLAY1, HIGH);  
+    delay(10);   
+    CerrarPuerta = 0;
+    Parar = "0";
+    Serial.println("cerrando desde abierta");
+    Serial.println(estadoParada);
+  }
 
   else if ((CerrarPuerta == 1) && (estadoParada == "paraSubida")){
-     digitalWrite(RLAY1, LOW);
-     delay(500);
-     digitalWrite(RLAY1, HIGH);  
-     delay(10);   
-     CerrarPuerta = 0;
-     Parar = "0";
-     estadoPuerta = "4";
-     Serial.println("cerrando desde parada");
-     Serial.println(estadoParada);
-     client.publish(MQTT_TOPIC"/puertan/estado", estadoPuerta, true);
-     }
+    digitalWrite(RLAY1, LOW);
+    delay(500);
+    digitalWrite(RLAY1, HIGH);  
+    delay(10);   
+    CerrarPuerta = 0;
+    Parar = "0";
+    estadoPuerta = "4";
+    Serial.println("cerrando desde parada");
+    Serial.println(estadoParada);
+    client.publish(MQTT_TOPIC"/puertan/estado", estadoPuerta, true);
+  }
   
   else if ((CerrarPuerta == 1) && (estadoParada == "paraBajada") && (estadoPuerta == "5")){
-     digitalWrite(RLAY1, LOW);
-     delay(500);
-     digitalWrite(RLAY1, HIGH);  
-     delay(10);
-     digitalWrite(RLAY1, LOW);
-     delay(500);
-     digitalWrite(RLAY1, HIGH);  
-     delay(10); 
-     digitalWrite(RLAY1, LOW);
-     delay(500);
-     digitalWrite(RLAY1, HIGH);  
-     delay(10);    
-     CerrarPuerta = 0;
-     Parar = "0";
-     estadoPuerta = "4";
-     Serial.println("cerrando desde parada bajada");
-     Serial.println(estadoParada);
-     client.publish(MQTT_TOPIC"/puerta/estado", estadoPuerta, true);
-     }
+    digitalWrite(RLAY1, LOW);
+    delay(500);
+    digitalWrite(RLAY1, HIGH);  
+    delay(10);
+    digitalWrite(RLAY1, LOW);
+    delay(500);
+    digitalWrite(RLAY1, HIGH);  
+    delay(10); 
+    digitalWrite(RLAY1, LOW);
+    delay(500);
+    digitalWrite(RLAY1, HIGH);  
+    delay(10);    
+    CerrarPuerta = 0;
+    Parar = "0";
+    estadoPuerta = "4";
+    Serial.println("cerrando desde parada bajada");
+    Serial.println(estadoParada);
+    client.publish(MQTT_TOPIC"/puerta/estado", estadoPuerta, true);
+  }
 
   else if ((CerrarPuerta == 1) && (estadoPuerta == "2") && (estadoCerrada == 0)){
-         digitalWrite(RLAY1, LOW);
-         delay(500);
-         digitalWrite(RLAY1, HIGH); 
-         delay(500);
-         digitalWrite(RLAY1, LOW);
-         delay(500);
-         digitalWrite(RLAY1, HIGH); 
-         delay(10);  
-         CerrarPuerta = 0; 
-         estadoPuerta = "4";
-         Parar = "0";
-         Serial.println("cerrando desde bajando");
-         Serial.println(estadoParada);
-         client.publish(MQTT_TOPIC"/puerta/estado", estadoPuerta, true);
+      digitalWrite(RLAY1, LOW);
+      delay(500);
+      digitalWrite(RLAY1, HIGH); 
+      delay(500);
+      digitalWrite(RLAY1, LOW);
+      delay(500);
+      digitalWrite(RLAY1, HIGH); 
+      delay(10);  
+      CerrarPuerta = 0; 
+      estadoPuerta = "4";
+      Parar = "0";
+      Serial.println("cerrando desde bajando");
+      Serial.println(estadoParada);
+      client.publish(MQTT_TOPIC"/puerta/estado", estadoPuerta, true);
     } else {
       estadoParada == "0";
       delay(10); 
-      
     }
-    
-   }
+}
 
 /**
  * 
  */   
 void parar(){
-
-   if ((Parar == "1") && (estadoPuerta == "2") && (estadoParada == "0")){
-     digitalWrite(RLAY1, LOW);
-     delay(500);
-     digitalWrite(RLAY1, HIGH);  
-     delay(10);   
-     estadoParada = "paraSubida";
-     estadoPuerta = "5";
-     Serial.println(estadoParada);
-     client.publish(MQTT_TOPIC"/puerta/estado", estadoPuerta, true);
-     }
-
-      else if ((Parar == "1") && (estadoPuerta == "4") && (estadoParada == "0")){
-         digitalWrite(RLAY1, LOW);
-         delay(500);
-         digitalWrite(RLAY1, HIGH); 
-         delay(10);  
-         estadoParada = "paraBajada"; 
-         estadoPuerta = "5";
-         Serial.println(estadoParada);
-         client.publish(MQTT_TOPIC"/puerta/estado", estadoPuerta, true);
-    } else {
+  if ((Parar == "1") && (estadoPuerta == "2") && (estadoParada == "0")){
+      digitalWrite(RLAY1, LOW);
+      delay(500);
+      digitalWrite(RLAY1, HIGH);  
+      delay(10);   
+      estadoParada = "paraSubida";
+      estadoPuerta = "5";
+      Serial.println(estadoParada);
+      client.publish(MQTT_TOPIC"/puerta/estado", estadoPuerta, true);
+    }
+    else if ((Parar == "1") && (estadoPuerta == "4") && (estadoParada == "0")){
+      digitalWrite(RLAY1, LOW);
+      delay(500);
+      digitalWrite(RLAY1, HIGH); 
+      delay(10);  
+      estadoParada = "paraBajada"; 
+      estadoPuerta = "5";
+      Serial.println(estadoParada);
+      client.publish(MQTT_TOPIC"/puerta/estado", estadoPuerta, true);
+    } 
+    else {
        //estadoParada = "0";
       delay(10); 
     }
-    
  }
 
 /*
@@ -390,7 +383,7 @@ void setup_wifi() {
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
- }
+}
 
 /*
 * This routine jump up when a message appears
@@ -422,7 +415,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
       delay(10);
     }
   }
- }
+}
 
 
 /**
@@ -452,4 +445,4 @@ void reconnect() {
       }     
     }
   }
- }
+}
