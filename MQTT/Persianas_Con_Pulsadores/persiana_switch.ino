@@ -17,18 +17,13 @@ byte temp_subir_p = 1;
 unsigned long start2;
 unsigned long tiempoAnterior3 = 0;
 unsigned long tiempoAnterior4 = 0;
-unsigned long periodo3;
-unsigned long periodo4;
-unsigned long tiempo1;
-unsigned long tiempo2;
+unsigned long periodo3, periodo4;
+unsigned long tiempo1, tiempo2;
 unsigned long currentMillis;
 
-int position_set;
-int position_real;
-int position_str;
-int position_send;
+int position_real;    // actualizado por callback
+int position_ideal;   // actualizado por callback
 int pos_str;
-
 
 int old_val1 = 0;
 int old_val2 = 0;
@@ -37,10 +32,8 @@ int old_state = 0;
 int state2 = 0;
 int old_state2 = 0;
 
-
 bool flanco1 = false;
 bool flanco2 = false;
-
 bool subiendo;
 bool bajando;
 
@@ -94,7 +87,7 @@ void helper_loop() {
   if (state == 1 && old_state == 0 && bajando == true) {
     parada();
   } else if (state == 1 && old_state == 0 && bajando == false) {
-    position_str = 100;
+    position_ideal = 100;
     subiendo = true;
     bajando = false;
   } else if (state == 0 && old_state == 1) {
@@ -106,7 +99,7 @@ void helper_loop() {
   if (state2 == 1 && old_state2 == 0 && subiendo == true) {
     parada();
   } else if (state2 == 1 && old_state2 == 0 && subiendo == false) {
-    position_str = 0;
+    position_ideal = 0;
     bajando = true;
     subiendo = false;
   } else if (state2 == 0 && old_state2 == 1) {
@@ -115,45 +108,24 @@ void helper_loop() {
   old_state2 = state2;
 
   // activar contador porcentaje
-  if (temp_subir_p == 1 && (position_str > position_real)) {
-    periodo3 = ((position_str - position_real) * TIME_UP / 100);
-    pos_str = position_str;
-    digitalWrite(RLAY1, LOW);
-    digitalWrite(RLAY2, HIGH);
-    Serial.println("SUBIENDO");
-    subiendo = true;
-    bajando = false;
+  if (temp_subir_p == 1 && (position_ideal > position_real)) {
+    periodo3 = ((position_ideal - position_real) * TIME_UP / 100);
+    pos_str = position_ideal;
     tiempoAnterior3 = millis();
-    client.publish(MQTT_TOPIC "/estado", "subiendo");
-    temp_bajar = 0;
-    temp_subir = 1;
-    temp_subir_p = 0;
-    temp_bajar_p = 0;
-  } else if (temp_bajar_p == 1 && (position_real > position_str)) {
-    periodo4 = ((position_real - position_str) * TIME_DOWN / 100);
-    pos_str = position_str;
-    digitalWrite(RLAY1, HIGH);
-    digitalWrite(RLAY2, LOW);
-    Serial.println("BAJANDO");
-    subiendo = false;
-    bajando = true;
+    subiendo();
+  } else if (temp_bajar_p == 1 && (position_real > position_ideal)) {
+    periodo4 = ((position_real - position_ideal) * TIME_DOWN / 100);
+    pos_str = position_ideal;
     tiempoAnterior4 = millis();
-    client.publish(MQTT_TOPIC "/estado", "bajando");
-    temp_bajar = 1;
-    temp_subir = 0;
-    temp_subir_p = 0;
-    temp_bajar_p = 0;
+    bajando();
   }
   
   // contadores subir --> periodo3, tiempoAnterior3
   if (temp_subir == 1) {
     currentMillis = millis();
     if (currentMillis - start2 > 200UL) {
-      int subiendo_str = (pos_str - (periodo3 + tiempoAnterior3 - currentMillis) * 100 / TIME_UP);
-      char message[10];
-      snprintf(message, 10, "%d", subiendo_str);
-      position_real = subiendo_str;
-      client.publish(MQTT_TOPIC "/position", message);
+      position_real = (pos_str - (periodo3 + tiempoAnterior3 - currentMillis) * 100 / TIME_UP);
+      publish_position(position_real);
       start2 = currentMillis;
     }
     if (currentMillis - tiempoAnterior3 > periodo3) {
@@ -165,11 +137,8 @@ void helper_loop() {
   if (temp_bajar == 1) {
     currentMillis = millis();
     if (currentMillis - start2 > 200UL) {
-      int bajando_str = (pos_str + ((periodo4 + tiempoAnterior4 - currentMillis) * 100 / TIME_DOWN));
-      char message[10];
-      snprintf(message, 10, "%d", bajando_str);
-      position_real = bajando_str;
-      client.publish(MQTT_TOPIC "/position", message);
+      position_real = (pos_str + ((periodo4 + tiempoAnterior4 - currentMillis) * 100 / TIME_DOWN));
+      publish_position(position_real);
       start2 = currentMillis;
     }
     if (currentMillis - tiempoAnterior4 > periodo4) {
@@ -186,20 +155,20 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
   if (strcmp(topic, MQTT_TOPIC "/set_position") == 0) {
     int position_set = atof(payloadStr.c_str());
-    position_str = position_set;
+    position_ideal = position_set;
     temp_subir_p == 1;
     temp_bajar_p == 1;
   } else if (strcmp(topic, MQTT_TOPIC "/position") == 0) {
     float position_pos = atof(payloadStr.c_str());
     position_real = position_pos;
-    position_str = position_pos;
+    position_ideal = position_pos;
     client.unsubscribe(topic_pos);
   } else if (strcmp(topic, MQTT_TOPIC "/comando") == 0) {
     String message = payloadStr;
     if (message == "subiendo") {
-      position_str = 100;
+      position_ideal = 100;
     } else if (message == "bajando") {
-      position_str = 0;
+      position_ideal = 0;
     } else if (message == "parada") {
       parada();
     }
@@ -209,21 +178,49 @@ void callback(char* topic, byte* payload, unsigned int length) {
 void parada() {
   digitalWrite(RLAY2, HIGH);
   digitalWrite(RLAY1, HIGH);
-  position_str = position_real;
   Serial.println("PARADA");
+  position_ideal = position_real;
   String position_ = String(position_real);
   client.publish(MQTT_TOPIC "/estado", "parada");
   client.publish(MQTT_TOPIC "/position", position_.c_str(), true);
   Serial.print(position_);
   Serial.println(" %");
+
   temp_bajar = 0;
   temp_subir = 0;
   temp_subir_p = 1;
   temp_bajar_p = 1;
-  state = 0;
-  old_state = 0;
-  state2 = 0;
-  old_state2 = 0;
+
+  state = 0; old_state = 0;
+  state2 = 0; old_state2 = 0;
   subiendo = false;
+  bajando = false;
+}
+
+void bajando() {
+  digitalWrite(RLAY1, HIGH);
+  digitalWrite(RLAY2, LOW);
+  Serial.println("BAJANDO");
+  client.publish(MQTT_TOPIC "/estado", "bajando");
+
+  temp_bajar = 1;
+  temp_subir = 0;
+  temp_subir_p = 0;
+  temp_bajar_p = 0;
+  subiendo = false;
+  bajando = true;
+}
+
+void subiendo() {
+  digitalWrite(RLAY1, LOW);
+  digitalWrite(RLAY2, HIGH);
+  Serial.println("SUBIENDO");
+  client.publish(MQTT_TOPIC "/estado", "subiendo");
+
+  temp_bajar = 0;
+  temp_subir = 1;
+  temp_subir_p = 0;
+  temp_bajar_p = 0;
+  subiendo = true;
   bajando = false;
 }
