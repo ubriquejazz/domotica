@@ -81,16 +81,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
   if (strcmp(topic, MQTT_TOPIC "/set_position") == 0) {
     // Recibimos set_position
-    int position_set = atof(payloadStr.c_str());
-    position_desired = position_set;
+    position_desired = atof(payloadStr.c_str());
     temp_subir_p == 1;
     temp_bajar_p == 1;
-  } else if (strcmp(topic, MQTT_TOPIC "/position") == 0) {
-    // Recibimos position
-    float position_pos = atof(payloadStr.c_str());
-    position_real = position_pos;
-    position_desired = position_pos;
-    client.unsubscribe(MQTT_TOPIC "/position");
   } else if (strcmp(topic, MQTT_TOPIC "/comando") == 0) {
     // Recibimos comando de la Raspberry
     String message = payloadStr;

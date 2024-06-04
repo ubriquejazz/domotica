@@ -162,7 +162,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     float position_pos = atof(payloadStr.c_str());
     position_real = position_pos;
     position_ideal = position_pos;
-    client.unsubscribe(topic_pos);
+    client.unsubscribe(MQTT_TOPIC "/position");
   } else if (strcmp(topic, MQTT_TOPIC "/comando") == 0) {
     String message = payloadStr;
     if (message == "subiendo") {
