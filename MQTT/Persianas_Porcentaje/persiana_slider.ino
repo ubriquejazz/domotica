@@ -86,12 +86,11 @@ void callback(char* topic, byte* payload, unsigned int length) {
     temp_bajar_p == 1;
   } else if (strcmp(topic, MQTT_TOPIC "/comando") == 0) {
     // Recibimos comando de la Raspberry
-    String message = payloadStr;
-    if (message == "subiendo") {
+    if (payloadStr == "subiendo") {
       position_desired = 100;
-    } else if (message == "bajando") {
+    } else if (payloadStr == "bajando") {
       position_desired = 0;
-    } else if (message == "parada") {
+    } else if (payloadStr == "parada") {
       parada();
     }
   }
@@ -102,9 +101,9 @@ void parada() {
   digitalWrite(RLAY1, HIGH);
   position_desired = position_real;
   Serial.println("PARADA");
-  String position_ = String(position_real);
   client.publish(MQTT_TOPIC "/estado", "parada");
-  client.publish(MQTT_TOPIC "/position", position_.c_str(), true);
+  client.publish(MQTT_TOPIC "/position", 
+    String(position_real).c_str(), true);
   temp_bajar = 0;
   temp_subir = 0;
   temp_subir_p = 1;
