@@ -11,8 +11,6 @@
 
 byte temp_subir = 0;
 byte temp_bajar = 0;
-byte temp_bajar_p = 1;
-byte temp_subir_p = 1;
 
 unsigned long start2;
 unsigned long tiempoAnterior3 = 0;
@@ -36,6 +34,27 @@ bool flanco1 = false;
 bool flanco2 = false;
 bool subiendo;
 bool bajando;
+
+byte temp_bajar_p = 1;    // flag desde parada
+byte temp_subir_p = 1;    // flag desde parada
+
+void temp_parada(int value) {
+  temp_subir_p = value;
+  temp_bajar_p = value;
+}
+
+void subscribe_topics() {
+  client.subscribe(MQTT_TOPIC "/comando");
+  client.subscribe(MQTT_TOPIC "/set_position");
+  client.subscribe(MQTT_TOPIC "/position");
+}
+
+void publish_position(int position) {
+  char message[10];
+  snprintf(message, 10, "%d", position);
+  client.publish(MQTT_TOPIC "/position", message);
+}
+
 
 void helper_setup() {
   digitalWrite(RLAY1, HIGH);  // Cambiar a LOW si funciona a la inversa
@@ -85,24 +104,28 @@ void helper_loop() {
 
   // accion boton subir
   if (state == 1 && old_state == 0 && bajando == true) {
+    position_ideal = position_real;
     parada();
   } else if (state == 1 && old_state == 0 && bajando == false) {
     position_ideal = 100;
     subiendo = true;
     bajando = false;
   } else if (state == 0 && old_state == 1) {
+    position_ideal = position_real;
     parada();
   }
   old_state = state;
 
   // accion boton bajar
   if (state2 == 1 && old_state2 == 0 && subiendo == true) {
+    position_ideal = position_real;
     parada();
   } else if (state2 == 1 && old_state2 == 0 && subiendo == false) {
     position_ideal = 0;
     bajando = true;
     subiendo = false;
   } else if (state2 == 0 && old_state2 == 1) {
+    position_ideal = position_real;
     parada();
   }
   old_state2 = state2;
@@ -129,6 +152,7 @@ void helper_loop() {
       start2 = currentMillis;
     }
     if (currentMillis - tiempoAnterior3 > periodo3) {
+      position_ideal = position_real;
       parada();
     }
   }
@@ -142,6 +166,7 @@ void helper_loop() {
       start2 = currentMillis;
     }
     if (currentMillis - tiempoAnterior4 > periodo4) {
+      position_ideal = position_real;
       parada();
     }
   }
@@ -158,18 +183,15 @@ void callback(char* topic, byte* payload, unsigned int length) {
     position_ideal = position_set;
     temp_subir_p == 1;
     temp_bajar_p == 1;
-  } else if (strcmp(topic, MQTT_TOPIC "/position") == 0) {
-    float position_pos = atof(payloadStr.c_str());
-    position_real = position_pos;
-    position_ideal = position_pos;
-    client.unsubscribe(MQTT_TOPIC "/position");
-  } else if (strcmp(topic, MQTT_TOPIC "/comando") == 0) {
+  } 
+  else if (strcmp(topic, MQTT_TOPIC "/comando") == 0) {
     String message = payloadStr;
     if (message == "subiendo") {
       position_ideal = 100;
     } else if (message == "bajando") {
       position_ideal = 0;
     } else if (message == "parada") {
+      position_ideal = position_real;
       parada();
     }
   }
@@ -179,21 +201,29 @@ void parada() {
   digitalWrite(RLAY2, HIGH);
   digitalWrite(RLAY1, HIGH);
   Serial.println("PARADA");
-  position_ideal = position_real;
-  String position_ = String(position_real);
   client.publish(MQTT_TOPIC "/estado", "parada");
-  client.publish(MQTT_TOPIC "/position", position_.c_str(), true);
-  Serial.print(position_);
+  client.publish(MQTT_TOPIC "/position", 
+    String(position_real).c_str(), true);
+  Serial.print(position_real);
   Serial.println(" %");
-
   temp_bajar = 0;
   temp_subir = 0;
-  temp_subir_p = 1;
-  temp_bajar_p = 1;
+  temp_parada(1);
 
   state = 0; old_state = 0;
   state2 = 0; old_state2 = 0;
+  
   subiendo = false;
+  bajando = false;
+}
+
+void subiendo() {
+  digitalWrite(RLAY1, LOW);
+  digitalWrite(RLAY2, HIGH);
+  Serial.println("SUBIENDO");
+  client.publish(MQTT_TOPIC "/estado", "subiendo");
+  temp_parada(0);
+  subiendo = true;
   bajando = false;
 }
 
@@ -202,25 +232,7 @@ void bajando() {
   digitalWrite(RLAY2, LOW);
   Serial.println("BAJANDO");
   client.publish(MQTT_TOPIC "/estado", "bajando");
-
-  temp_bajar = 1;
-  temp_subir = 0;
-  temp_subir_p = 0;
-  temp_bajar_p = 0;
+  temp_parada(0);
   subiendo = false;
   bajando = true;
-}
-
-void subiendo() {
-  digitalWrite(RLAY1, LOW);
-  digitalWrite(RLAY2, HIGH);
-  Serial.println("SUBIENDO");
-  client.publish(MQTT_TOPIC "/estado", "subiendo");
-
-  temp_bajar = 0;
-  temp_subir = 1;
-  temp_subir_p = 0;
-  temp_bajar_p = 0;
-  subiendo = true;
-  bajando = false;
 }

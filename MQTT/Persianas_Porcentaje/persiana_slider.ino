@@ -7,11 +7,12 @@
 
 // **** Globals **** //
 int position_desired;     // actualizado por callback
-int position_real;        // actualizado por callback
+int position_real;        // actualizado en el loop()
 byte temp_subir = 0;      // flag de subida
 byte temp_bajar = 0;      // flag de bajada
-byte temp_bajar_p = 1;    // flag de parada
-byte temp_subir_p = 1;    // flag de parada
+
+byte temp_bajar_p = 1;    // flag desde parada
+byte temp_subir_p = 1;    // flag desde parada
 
 void temp_parada(int value) {
   temp_subir_p = value;
@@ -22,6 +23,12 @@ void subscribe_topics() {
   client.subscribe(MQTT_TOPIC "/comando");
   client.subscribe(MQTT_TOPIC "/set_position");
   client.subscribe(MQTT_TOPIC "/position");
+}
+
+void publish_position(int position) {
+  char message[10];
+  snprintf(message, 10, "%d", position);
+  client.publish(MQTT_TOPIC "/position", message);
 }
 
 void helper_setup() {

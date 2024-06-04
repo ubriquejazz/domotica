@@ -89,9 +89,3 @@ void reconnect() {
     }
   } // end while
 }
-
-void publish_position(int position) {
-  char message[10];
-  snprintf(message, 10, "%d", position);
-  client.publish(MQTT_TOPIC "/position", message);
-}
