@@ -13,9 +13,10 @@ byte temp_bajar = 0;      // flag de bajada
 byte temp_bajar_p = 1;    // flag de parada
 byte temp_subir_p = 1;    // flag de parada
 
-unsigned long tiempoAnterior3 = 0;
-unsigned long tiempoAnterior4 = 0;
-unsigned long periodo3, periodo4;
+void temp_parada(int value) {
+  temp_subir_p = value;
+  temp_bajar_p = value;
+}
 
 void subscribe_topics() {
   client.subscribe(MQTT_TOPIC "/comando");
@@ -32,43 +33,55 @@ void helper_setup() {
 
 void helper_loop() {
   static int pos_str;
-  static unsigned long start2;
+  static unsigned long previousMillis;
+  unsigned long currentMillis, ahora;
 
-  // Inicializa contadores
+  static unsigned long timeDown, timeUp;
+  static unsigned long tiempoAnterior3 = 0;
+  static unsigned long tiempoAnterior4 = 0;
+
+  // Prepara contadores para inicializar temporizacion
   if (temp_subir_p == 1 && (position_desired > position_real)) {
-    periodo3 = ((position_desired - position_real) * TIME_UP / 100);
     pos_str = position_desired;
-    tiempoAnterior3 = millis();
-    subiendo();
-  } else if (temp_bajar_p == 1 && (position_real > position_desired)) {
-    periodo4 = ((position_real - position_desired) * TIME_DOWN / 100);
-    pos_str = position_desired;
+    timeUp = (pos_str - position_real) * TIME_UP / 100;
     tiempoAnterior4 = millis();
+    subiendo();
+    temp_bajar = 0;
+    temp_subir = 1;
+  } 
+  else if (temp_bajar_p == 1 && (position_real > position_desired)) {
+    pos_str = position_desired;
+    timeDown = (position_real - pos_str) * TIME_DOWN / 100;
+    tiempoAnterior3 = millis();
     bajando();
+    temp_bajar = 1;
+    temp_subir = 0;
   }
 
-  // Contadores para bajar --> periodo3, tiempoAnterior3
+  // Contadores para subir --> timeDown, tiempoAnterior3
   if (temp_subir == 1) {
     currentMillis = millis();
-    if (currentMillis - start2 > 200UL) {
-      position_real = (pos_str - (periodo3 + tiempoAnterior3 - currentMillis) * 100 / TIME_UP);
+    if (currentMillis - previousMillis > 200UL) {
+      position_real = (pos_str - (timeDown + tiempoAnterior3 - currentMillis) * 100 / TIME_UP);
       publish_position(position_real);
-      start2 = currentMillis;
+      previousMillis = currentMillis;
     }
-    if (currentMillis - tiempoAnterior3 > periodo3) {
+    if (currentMillis - tiempoAnterior3 > timeDown) {
+      position_desired = position_real;
       parada();
     }
   }
 
-  // Contadores para bajar --> periodo4, tiempoAnterior4
+  // Contadores para bajar --> timeUp, tiempoAnterior4
   if (temp_bajar == 1) {
     currentMillis = millis();
-    if (currentMillis - start2 > 200UL) {
-      position_real = (pos_str + ((periodo4 + tiempoAnterior4 - currentMillis) * 100 / TIME_DOWN));
+    if (currentMillis - previousMillis > 200UL) {
+      position_real = (pos_str + ((timeUp + tiempoAnterior4 - currentMillis) * 100 / TIME_DOWN));
       publish_position(position_real);
-      start2 = currentMillis;
+      previousMillis = currentMillis;
     }
-    if (currentMillis - tiempoAnterior4 > periodo4) {
+    if (currentMillis - tiempoAnterior4 > timeUp) {
+      position_desired = position_real;
       parada();
     }
   }
@@ -82,8 +95,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   if (strcmp(topic, MQTT_TOPIC "/set_position") == 0) {
     // Recibimos set_position
     position_desired = atof(payloadStr.c_str());
-    temp_subir_p == 1;
-    temp_bajar_p == 1;
+    temp_parada(1);
   } else if (strcmp(topic, MQTT_TOPIC "/comando") == 0) {
     // Recibimos comando de la Raspberry
     if (payloadStr == "subiendo") {
@@ -91,6 +103,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     } else if (payloadStr == "bajando") {
       position_desired = 0;
     } else if (payloadStr == "parada") {
+      position_desired = position_real;
       parada();
     }
   }
@@ -99,15 +112,13 @@ void callback(char* topic, byte* payload, unsigned int length) {
 void parada() {
   digitalWrite(RLAY2, HIGH);
   digitalWrite(RLAY1, HIGH);
-  position_desired = position_real;
   Serial.println("PARADA");
   client.publish(MQTT_TOPIC "/estado", "parada");
   client.publish(MQTT_TOPIC "/position", 
     String(position_real).c_str(), true);
   temp_bajar = 0;
   temp_subir = 0;
-  temp_subir_p = 1;
-  temp_bajar_p = 1;
+  temp_parada(1);
 }
 
 void subiendo() {
@@ -115,10 +126,7 @@ void subiendo() {
   digitalWrite(RLAY2, HIGH);
   Serial.println("SUBIENDO");
   client.publish(MQTT_TOPIC "/estado", "subiendo");
-  temp_bajar = 0;
-  temp_subir = 1;
-  temp_subir_p = 0;
-  temp_bajar_p = 0;
+  temp_parada(0);
 }
 
 void bajando() {
@@ -126,8 +134,5 @@ void bajando() {
   digitalWrite(RLAY2, LOW);
   Serial.println("BAJANDO");
   client.publish(MQTT_TOPIC "/estado", "bajando");
-  temp_bajar = 1;
-  temp_subir = 0;
-  temp_subir_p = 0;
-  temp_bajar_p = 0;
+  temp_parada(0);
 }
