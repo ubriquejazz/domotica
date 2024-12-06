@@ -4,8 +4,6 @@ Authors: cheungbx  2020/04/30, ubriquejazz 2021/12/22
 
 Pin layout from each module to the AZDelivery ESP32 D1 R32 WLAN
 
-
-
 **L298N motor module**
 
 |      | Arduino | ESP32   |
