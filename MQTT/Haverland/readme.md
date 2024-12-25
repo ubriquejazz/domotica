@@ -27,13 +27,13 @@ Le aparece en el display HorA. Pulse las teclas de navegación hasta que aparezc
 - 22.0 C:
 Aparece la temperatura de confort por defecto de fábrica. Marque la temperatura de confort que usted desee, por ejemplo 24, 5 ºC.
 
-Con estos pasos el emisor queda configurado con unatemperatura de confort de 24,5 º C, en vez de una temperaturade confort de 22 ºC.
+Con estos pasos el emisor queda configurado con unatemperatura de confort de 18,5 º C, en vez de una temperaturade confort de 22 ºC.
 
 ## VARIAR LA Tª ECONÓMICA
 
 ...
 
-Con estos pasos el emisor queda configurado con una temperatura económica de 19,5ºC, en vez de una temperaturaeconómica de 18ºC.
+Con estos pasos el emisor queda configurado con una temperatura económica de 14,5ºC, en vez de una temperaturaeconómica de 18ºC.
 
 ## VARIAR EL PLAN DE CALEFACCIÓN
 
