@@ -1,4 +1,0 @@
-  sensor:  
-    - name: "Sensor de lluvia"
-      unique_id: "Sensor_lluvia"
-      state_topic: "sensores/lluvia"  
