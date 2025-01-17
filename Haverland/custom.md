@@ -12,6 +12,7 @@ El plan a configur ar ser ia el siguiente:
 | Sábado a Domingo | 9:00 | 12:00 | - | - | 14:00 | 23:00 |
 
 ## Operatoria
+
 - 19.0 C:
 En el display aparece la temperaturaa la que está la estancia. Vamos aconfigurar el plan de calefacción a su medida. Pulsar la tecla PROG 1,5 seg
 
