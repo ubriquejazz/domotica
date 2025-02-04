@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hardware Control Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">    
+</head>
+<body>
+  <header>
+    <h1>Hardware Control Dashboard</h1>
+  </header>
+  <div class="container">
+    <div class="card">
+      <h3>LED Control</h3>
+      <button class="btn" onclick="toggleLED()">Toggle LED</button>
+      <p class="status" id="led-status">Status: OFF</p>
+    </div>
+    <div class="card">
+      <h3>Temperature Sensor</h3>
+      <p>Current Temperature: <span id="temp">--</span> °C</p>
+    </div>
+  </div>
+  <script>
+    async function toggleLED() {
+      const response = await fetch('/toggle-led');
+      const result = await response.json();
+      document.getElementById('led-status').textContent = `Status: ${result.status}`;
+    }
+    async function fetchTemp() {
+      const response = await fetch('/get-temp');
+      const result = await response.json();
+      document.getElementById('temp').textContent = result.temperature;
+    }
+    setInterval(fetchTemp, 2000);
+  </script>
+</body>
+</html>
