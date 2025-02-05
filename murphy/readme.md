@@ -1,12 +1,13 @@
-# Murphyadmin
+# Murphy
 
-## Home assistant
+## Home assistant (hass)
 
 - [YAML files in HASS](https://www.youtube.com/watch?v=lKDcnfaX7O8&t=333s)
 - Install the MQTT Client on the RPi1 (paho-mqtt)
-- Python script 
+- Python script called led_mqtt
+- Test of the setup designed by Ardubrico
 
-## Repertorio
+## Arduino
 
 | Command | Topic |
 | ------- | ----- |
@@ -23,7 +24,7 @@
 1. Live Data Display:
     Sensor readings (e.g., temperature, humidity).
 
-## Manual de usuario
+### Manual de usuario
 
 1. Ejecuta el servidor:
 
