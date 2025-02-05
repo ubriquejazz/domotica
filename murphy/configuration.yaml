@@ -1,0 +1,25 @@
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+mqtt: 
+  sensor:
+    - name: "Bedroom Temperature"
+      state_topic: "bedroom/temperature"
+      
+  light:
+    - name: "Luz de la cocina"
+      command_topic: "cocina/luces"
+      state_topic: "cocina/luces/state"
+      payload_off: "OFF"
+      payload_on: "ON"
+
+  cover:
+    - name: "Azotea Blind"
+      command_topic: "azotea/blind"
+      state_topic: "azotea/blind/state"
+      payload_open: "UP"
+      payload_close: "DOWN"
+      payload_stop: "STOP"
+      state_open: "open"
+      state_closed: "closed"
