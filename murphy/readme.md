@@ -1,5 +1,11 @@
 # Murphyadmin
 
+## Home assistant
+
+- [YAML files in HASS](https://www.youtube.com/watch?v=lKDcnfaX7O8&t=333s)
+- Install the MQTT Client on the RPi1 (paho-mqtt)
+- Python script 
+
 ## Repertorio
 
 | Command | Topic |
