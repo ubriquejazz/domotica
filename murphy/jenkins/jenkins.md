@@ -4,7 +4,7 @@ Here’s a Python script for the demo:
 
     hw_test.py
 
-###  Communication under tests
+## Communication under tests
 
 Serial Communication: Use libraries like pyserial to communicate with devices via UART or USB.
 
@@ -30,7 +30,7 @@ GPIO Control: For devices like Raspberry Pi, use libraries like RPi.GPIO or gpio
     time.sleep(1)
     GPIO.output(18, GPIO.LOW)
 
-### Jenkins server
+## Jenkins server
 
 Ensure your C code is in a version control system (e.g., GitHub). This server has all the development tools installed (compiler, debugger, flash). Once the application is running it's able to communicate throught the serial port (CDC-USB)
 

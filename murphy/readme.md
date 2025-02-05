@@ -7,7 +7,14 @@
 - Python script called led_mqtt
 - Test of the setup designed by Ardubrico
 
-## Arduino
+## Web Interface Design
+
+1. LED Status Indicator:
+    Green = ON; Red = OFF
+1. Live Data Display:
+    Sensor readings (e.g., temperature, humidity).
+
+### Arduino
 
 | Command | Topic |
 | ------- | ----- |
@@ -15,14 +22,6 @@
 | LEDOFF | Apaga el LED interno| 
 | STATUS | Muestra el estado del LED| 
 | GET_TEMP | Obtiene la temperatura actual| 
-
-## Web Interface Design
-
-1. LED Status Indicator:
-    Green = ON; Red = OFF
-        
-1. Live Data Display:
-    Sensor readings (e.g., temperature, humidity).
 
 ### Manual de usuario
 
