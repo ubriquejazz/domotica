@@ -2,7 +2,7 @@ import serial
 import time, sys
 
 # Test parameters
-COMMAND = "?"  # The command to send
+COMMAND = "AT?"  # The command to send
 EXPECTED = "OK"  # The expected response from the device
 
 def test_serial_command(port, baudrate, command, expected_response):
