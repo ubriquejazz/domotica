@@ -1,0 +1,10 @@
+esphome:
+  name: camera02
+  friendly_name: Camera 02
+  
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+esp32_camera:

@@ -1,0 +1,17 @@
+esphome:
+  name: sensor01
+  friendly_name: Sensor 01
+  
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+sensor:
+  - platform: dht
+    pin: D2
+    temperature:
+      name: "Living Room Temperature"
+    humidity:
+      name: "Living Room Humidity"
+    update_interval: 60s
