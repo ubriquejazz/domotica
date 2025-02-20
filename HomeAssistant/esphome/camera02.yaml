@@ -1,6 +1,8 @@
+# https://devices.esphome.io/devices/ESP32-CAM
+
 esphome:
   name: camera02
-  friendly_name: Camera 02
+  friendly_name: ESP32-CAM Camera 
   
 esp32:
   board: esp32dev

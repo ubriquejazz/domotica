@@ -1,0 +1,10 @@
+# https://devices.esphome.io/devices/NodeMCU-DHT11
+# https://www.instructables.com/Interface-DHT11-Humidity-Sensor-Using-NodeMCU/
+substitutions:
+  name: nodemcu_lr
+  ip: 192.168.1.21
+  friendly_name: Livingroom Sensor
+  friendly_name_temp: Livingroom Temperature
+  friendly_name_humidity: Livingroom Humidity
+
+<<: !include common_dht11.yaml

@@ -1,0 +1,15 @@
+# https://devices.esphome.io/devices/Generic-Relay
+
+esphome:
+  name: relay01
+  friendly_name: Generic Relay 
+  
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+switch:
+  - platform: gpio
+    pin: D13
+
