@@ -2,8 +2,8 @@
 
 esphome:
   name: relay01
-  friendly_name: Generic Relay 
-  
+  friendly_name: Relay ESP32
+
 esp32:
   board: esp32dev
   framework:
@@ -11,5 +11,7 @@ esp32:
 
 switch:
   - platform: gpio
-    pin: D13
-
+    name: "Relay 01"
+    pin:
+      number: GPIO13
+      inverted: False
