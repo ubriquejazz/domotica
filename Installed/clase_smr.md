@@ -40,6 +40,14 @@ En una instalación básica encontramos tres tipos principales de circuitos:
     🔌 Función: Alimenta aparatos potentes como hornos, lavadoras o aire acondicionado.
     🔧 Sección del cable: 4 mm² o más (automático de 25A).
 
+Explicar que es la potencia y poner ejemplos prácticos como:
+
+| Dispositivo | Potencia (W) | Circuito |
+|-------------|--------------|----------|
+| Bombilla LED | 10W | C10 |
+| Microondas | 1000W | C16 |
+| Lavadora   | 2200W | C25 |
+
 ### Conclusión y repaso
 
 - No todos los cables y enchufes son iguales; cada uno tiene una función específica.
@@ -52,17 +60,7 @@ En una instalación básica encontramos tres tipos principales de circuitos:
 
     Hacer una tabla con cada aparato y su probable tipo de circuito.
 
-2. Cálculo de consumo
-
-    Explicar que es la potencia y poner ejemplos prácticos como:
-
-| Dispositivo | Potencia (W) | Circuito |
-|-------------|--------------|----------|
-| Bombilla LED | 10W | C10 |
-| Microondas | 1000W | C16 |
-| Lavadora   | 2200W | C25 |
-
-3. Simulación de sobrecarga: 
+1. Simulación de sobrecarga:
 
     ¿Qué pasaría si conectamos un horno en un enchufe del circuito de iluminación?
   
