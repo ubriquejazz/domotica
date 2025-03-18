@@ -1,8 +1,8 @@
-# Instalacion electrica basica
+# Instalacion eléctrica basica en una vivienda
 
-## Componentes básicos de una instalación eléctrica (25 min)
+## Componentes básicos
 
-Circuitos y elementos principales
+**Circuitos y elementos principales**
 
 - Toma de corriente y enchufes: Cómo funcionan y diferencias.
 - Interruptores y bombillas: Conexión básica de un circuito de iluminación.
@@ -11,15 +11,15 @@ Circuitos y elementos principales
 Actividad práctica:
 Dibujar el esquema de una instalación eléctrica sencilla (circuito de iluminación con interruptor y enchufe).
 
-## Cuadro eléctrico: Diferencial y automáticos
+**Cuadro eléctrico: Diferencial y automáticos**
 
 - Función del interruptor diferencial (protección contra descargas).
 - Los automáticos (protección contra sobrecargas y cortocircuitos).
 
-Simulación: Pedir a los alumnos que imaginen que están en casa y de repente se va la luz en una parte de la casa.
+Simulación: Imaginemos que estamos en casa y de repente se va la luz en una parte de la casa.
 Mostrar un cuadro eléctrico real o en una imagen y explicar cómo rearmarlo con seguridad.
 
-## Tipos de circuitos eléctricos en una vivienda
+## Tipos de circuitos eléctricos
 
 En una instalación básica encontramos tres tipos principales de circuitos:
 
@@ -39,6 +39,12 @@ En una instalación básica encontramos tres tipos principales de circuitos:
 
     🔌 Función: Alimenta aparatos potentes como hornos, lavadoras o aire acondicionado.
     🔧 Sección del cable: 4 mm² o más (automático de 25A).
+
+### Conclusión y repaso
+
+- No todos los cables y enchufes son iguales; cada uno tiene una función específica.
+- Hay circuitos específicos para iluminación, enchufes normales y electrodomésticos de alto consumo.
+- Elegir bien la sección del cable evita incendios y averías eléctricas.
 
 ### Actividad
 
@@ -60,9 +66,3 @@ En una instalación básica encontramos tres tipos principales de circuitos:
 
     ¿Qué pasaría si conectamos un horno en un enchufe del circuito de iluminación?
   
-### Conclusión y repaso
-
-- No todos los cables y enchufes son iguales; cada uno tiene una función específica.
-- Hay circuitos específicos para iluminación, enchufes normales y electrodomésticos de alto consumo.
-- Elegir bien la sección del cable evita incendios y averías eléctricas.
-
