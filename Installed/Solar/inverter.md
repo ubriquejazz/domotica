@@ -11,16 +11,6 @@
 - Max. PV Array Open Circuit Voltage 40Vcc
 - PV Array MPPT Voltage Range   40~500Vcc
 
-Take 250W PV module as an example. After considering above two parameters, the recommended module configurations are listed as below table.
-
-| Parameter | Symbol | Value |
-| --------- | ------ | ----- |
-| Maximum Power | Pmax | 250W
-| Max. Power Voltage | Vmpp(V) | 30.1V
-| Max. Power Current | Impp(A) | 8.3A
-| Open Circuit Voltage | Voc(V) | 37.7V
-| Short Circuit Current | Isc(A) | 8.3A
-
 ## AC Out
 
 **63A, 230Vac** - Caja Eléctrica Impermeable IP65, con diferencial e interruptor magneto/termico de 5 Vías 2x6A + 1x10A + 1x20A + 1x32A
