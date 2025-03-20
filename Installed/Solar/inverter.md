@@ -15,7 +15,7 @@
 
 **63A, 230Vac** - Caja Eléctrica Impermeable IP65, con diferencial e interruptor magneto/termico de 5 Vías 2x6A + 1x10A + 1x20A + 1x32A
 
-**Installed** - Caja con IGA, ID y PIAs de 1x10 + 2x16A + 1x20A
+**Installed** - Caja con IGA, ID y PIAs de 1x10 + 2x16A + 1x25A
 
 **10 AWG, 6 mm2** - For 3KVA-5KVA models, insert AC input wires according to polarities indicated on terminal block and tighten the terminal screws. Be sure to connect PE protective conductor first (yellow-green). Remember neutral (blue)
 
