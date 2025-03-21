@@ -48,19 +48,43 @@ Explicar que es la potencia y poner ejemplos prácticos como:
 | Microondas | 1000W | C16 |
 | Lavadora   | 2200W | C25 |
 
+### Fase, Neutro y Tierra (PE)
+
+La fase (L) transporta la corriente desde la red eléctrica hasta los dispositivos eléctricos (230Vac). El neutro (N) cierra el circuito y devuelve la corriente a la red eléctrica (esta conectado a tierra en el centro de transformacion).
+
+La importancia de una buena toma de Tierra:
+
+- Evita descargas eléctricas en caso de contacto con un aparato en mal estado.
+- Hace que el diferencial funcione correctamente: si hay una fuga, el diferencial corta la corriente.
+- Protege electrodomésticos y circuitos de sobretensiones o descargas atmosféricas.
+
+| Cable  | Función | Color | Precaución |
+|--------|---------|-------|------------|
+| **Fase (L)** | Lleva la electricidad | Negro | Puede dar descarga ⚠️ |
+| **Neutro (N)** | Devuelve la corriente | Azul | Normalmente seguro, pero cuidado |
+| **Tierra (PE)** | Protección contra descargas | Verde/Amarillo | No debe usarse para otro propósito |
+
 ### Conclusión y repaso
 
 - No todos los cables y enchufes son iguales; cada uno tiene una función específica.
 - Hay circuitos específicos para iluminación, enchufes normales y electrodomésticos de alto consumo.
 - Elegir bien la sección del cable evita incendios y averías eléctricas.
+- Fase lleva la electricidad, neutro la devuelve y tierra nos protege.
+- El cable de tierra es vital para evitar accidentes.
+- Nunca tocar un cable sin saber si es fase o neutro.
 
 ### Actividad
 
 1. Observación en casa
 
-    Hacer una tabla con cada aparato y su probable tipo de circuito.
+- Hacer una tabla con cada aparato y su probable tipo de circuito.
 
 1. Simulación de sobrecarga:
 
-    ¿Qué pasaría si conectamos un horno en un enchufe del circuito de iluminación?
-  
+- ¿Qué pasaría si conectamos un horno en un enchufe del circuito de iluminación?
+
+1. Experimento con multímetro (si es posible)
+
+- Medir el voltaje entre fase y neutro (debería dar 230Vac).
+- Medir entre fase y tierra (debe dar el mismo voltaje que entre fase y neutro).
+- Medir entre neutro y tierra (debería dar 0V o un valor muy bajo)
