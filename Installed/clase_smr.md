@@ -48,7 +48,7 @@ Explicar que es la potencia y poner ejemplos prácticos como:
 | Microondas | 1000W | C16 |
 | Lavadora   | 2200W | C25 |
 
-### Fase, Neutro y Tierra (PE)
+## Fase, Neutro y Tierra (PE)
 
 La fase (L) transporta la corriente desde la red eléctrica hasta los dispositivos eléctricos (230Vac). El neutro (N) cierra el circuito y devuelve la corriente a la red eléctrica (esta conectado a tierra en el centro de transformacion).
 
@@ -64,7 +64,9 @@ La importancia de una buena toma de Tierra:
 | **Neutro (N)** | Devuelve la corriente | Azul | Normalmente seguro, pero cuidado |
 | **Tierra (PE)** | Protección contra descargas | Verde/Amarillo | No debe usarse para otro propósito |
 
-### Conclusión y repaso
+## Carga de baterias
+
+## Conclusión y repaso
 
 - No todos los cables y enchufes son iguales; cada uno tiene una función específica.
 - Hay circuitos específicos para iluminación, enchufes normales y electrodomésticos de alto consumo.

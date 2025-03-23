@@ -4,12 +4,11 @@
 
 ## PV
 
-**50A** - Before connecting to PV modules, please install separately a DC circuit breaker between inverter and PV modules. 
-
-**12AWG** - It's important for system safety and efficient operation to use appropriate cable for PV module connection, **4 mm2**
+**50A** - Before connecting to PV modules, please install separately a DC circuit breaker between inverter and PV modules. It's important for system safety and efficient operation to use appropriate cable for PV module connection, **4 mm2**
 
 - Max. PV Array Open Circuit Voltage 40Vcc
 - PV Array MPPT Voltage Range   40~500Vcc
+- Potencia maxima FV: 
 
 ## AC Out
 

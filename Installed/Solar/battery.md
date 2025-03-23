@@ -20,6 +20,7 @@ LiTime baterías 12V 100Ah admiten hasta 4 en serie y 4 en paralelo (máx. 4S4P)
 
 ## Protecciones
 
-Battery wire: 2 x 8AWG (10 mm2) de 1.5m de longitud
-Internal: 5AWG (16 mm2) de 50cm de longitud
-Fuse 150A, en paralelo con Breaker 200A, 24V
+- Battery wire: 2 x 8AWG (10 mm2) de 1.5m de longitud
+- 5AWG (16 mm2) de 50cm de longitud
+- latiguillo (34 mm2) con agujero M8
+- Fuse 150A, en paralelo con Breaker 200A, 24V

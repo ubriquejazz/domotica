@@ -22,8 +22,8 @@ Se pueden configurar tres modos de salida: prioridad fotovoltaica/prioridad de s
 | Inversor | 255
 | Paneles | 132
 | Soporte | 64
-| Cableado | 200 
 | Baterias | 400
+| Estimacion | 855
 
 En Autosolar el kit sale por 1700 euros.
 
