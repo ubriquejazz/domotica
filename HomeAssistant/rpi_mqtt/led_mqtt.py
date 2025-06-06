@@ -5,11 +5,16 @@ import time
 # Define GPIO Pins for Relays
 BLIND_UP = 23
 BLIND_DOWN = 24
+SW1 = 9
+SW2 = 11
+DURATION = 20
 
 # GPIO Setup
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BLIND_UP, GPIO.OUT, initial=GPIO.HIGH)
 GPIO.setup(BLIND_DOWN, GPIO.OUT, initial=GPIO.HIGH)
+GPIO.setup(SW1, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(SW2, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 # MQTT Configuration
 MQTT_BROKER = "172.16.1.114"  # Replace with your Home Assistant IP
@@ -36,15 +41,12 @@ def on_message(client, userdata, msg):
     payload = msg.payload.decode().strip().upper()  # Normalize input
 
     if payload == "UP":
-        print("Raising the blind ⬆️")
-        move_up(2)
+        move_up(DURATION)
 
     elif payload == "DOWN":
-        print("Lowering the blind ⬇️")
-        move_down(2)
+        move_down(DURATION)
 
     elif payload == "STOP":
-        print("Stopping the blind ⏹")
         GPIO.output(BLIND_UP, GPIO.HIGH)
         GPIO.output(BLIND_DOWN, GPIO.HIGH)
 
@@ -56,6 +58,16 @@ def publish_state(client, state):
     print(f"Publishing state: {state}")
     client.publish(MQTT_STATE_TOPIC, state, retain=True)
 
+def button_up():
+    move_up(DURATION)
+
+def button_down():
+    move_down(DURATION)
+
+# SW Setup
+GPIO.add_event_detect(SW1, GPIO.FALLING, callback=button_up) 
+GPIO.add_event_detect(SW2, GPIO.FALLING, callback=button_down) 
+
 # MQTT Setup
 time.sleep(20) # Wait for the network to be ready
 client = mqtt.Client()
@@ -65,5 +77,8 @@ client.on_message = on_message
 client.connect(MQTT_BROKER, MQTT_PORT, 60)
 client.subscribe(MQTT_TOPIC_BLIND)
 
-# Start MQTT loop
-client.loop_forever()
+try:
+    client.loop_forever()
+except KeyboardInterrupt:
+    GPIO.cleanup()
+print("End of the program")
