@@ -2,7 +2,7 @@
 
 ## busbar a 12V
 
-![](camper%20solar.png)
+![esquema](fig/youtube.png)
 
 - inverter 1500W
 - panel @ 500W; eficiencia 50%
