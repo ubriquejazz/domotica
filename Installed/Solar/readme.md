@@ -1,8 +1,25 @@
-# Installing inverter
+# User manual
 
-![Wires](../DATOUBOSS.png)
+![dash](fig/dashboard.png)
 
-## PV
+## LED indicator
+
+| L1 | **Inverter (Green)** |
+| ------ | ----------- | 
+| Solid On | Output is powered by utility in Line mode.
+| Flashing | Output is powered by battery or PV in battery mode.
+
+| L2 | **Charger (Green)** |
+| ------ | ----------- | 
+| Solid On | Battery is fully charged.
+| Flashing | Battery is charging.
+
+| L3 | **Fault (Red)** |
+| ------ | ----------- | 
+| Solid On | Fault occurs in the inverter.
+| Flashing | Warning condition occurs in the inverter.
+
+## Instalation: PV
 
 **50A** - Before connecting to PV modules, please install separately a DC circuit breaker between inverter and PV modules. It's important for system safety and efficient operation to use appropriate cable for PV module connection, **4 mm2**
 
@@ -10,7 +27,7 @@
 - PV Array MPPT Voltage Range   40~500Vcc
 - Potencia maxima FV: 
 
-## AC Out
+## Instalation: AC Out
 
 **63A, 230Vac** - Caja Eléctrica Impermeable IP65, con diferencial e interruptor magneto/termico de 5 Vías 2x6A + 1x10A + 1x20A + 1x32A
 
@@ -28,3 +45,5 @@ Please follow below steps to implement AC input/output connection:
 **2AWG, 35 mm2** - Connect all battery packs as below chart. It’s suggested to connect at least 100Ah capacity battery for 1-3KVA model.
 
 A separate DC overcurrent protector between battery and inverter. It may not be requested to have a disconnect device in some applications, however, it’s still requested to have over-current protection installed. Please refer to typical amperage in below table as required fuse or breaker size.
+
+![Wires](../fig/DATOUBOSS.png)
