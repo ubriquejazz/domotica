@@ -2,6 +2,9 @@
 
 ![dash](fig/dashboard.png)
 
+- rango de voltaje MPPT: 40~500Vcc (2 paneles)
+- corriente de carga máxima (cargador de CA + cargador fotovoltaico): 100A
+
 ## LED indicator
 
 | L1 | **Inverter (Green)** |
@@ -47,3 +50,5 @@ Please follow below steps to implement AC input/output connection:
 A separate DC overcurrent protector between battery and inverter. It may not be requested to have a disconnect device in some applications, however, it’s still requested to have over-current protection installed. Please refer to typical amperage in below table as required fuse or breaker size.
 
 ![Wires](../fig/DATOUBOSS.png)
+
+Se pueden configurar tres modos de salida: prioridad fotovoltaica/prioridad de suministro/prioridad del inversor, que pueden satisfacer diferentes requisitos de aplicación de los usuarios. Además, el inversor híbrido tiene una disipación de calor inteligente, que activa diferentes efectos de disipación de calor dependiendo de la temperatura del dispositivo. 

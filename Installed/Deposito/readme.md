@@ -1,9 +1,5 @@
 # Deposito Water level
 
-En el garaje, el motor se arranca cuando queramos inyectar agua al deposito y/o cargar las baterias.
-
-**Problema**: no se sabe por donde esta el nivel!
-
 ## Aguas abajo
 
 La PiZero recibe un mensaje UART y lo muestra en un gauge (node-red)
