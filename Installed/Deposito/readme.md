@@ -29,6 +29,7 @@ La raspberry recibe un mensaje UART y lo muestra en un gauge (node-red)
 ## Referencias
 
 - [DIY or BUY](https://www.youtube.com/watch?v=jriRW4rGQp4&t=224s)
+- MPTT [controller](https://www.youtube.com/watch?v=pTtVe7P_lIc)
 - [how2electronics](https://how2electronics.com/modbus-rtu-with-raspberry-pi-pico-micropython/)
 - Pedido AliExpress:
     - JSN-SR04T/AJ-SR04M Sensor de medición de distancia integrado a prueba de agua.
