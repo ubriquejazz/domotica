@@ -45,7 +45,6 @@ def verify_crc(frame):
     calculated_crc = calculate_crc(frame[:-2])
     return received_crc == calculated_crc
 
-
 def get_sensor_data():
     # Frame: [01 03 01 00 00 01 85 F6]
     dist_req = construct_modbus_request(0x01, 0x00, 0x00, 0x01)
