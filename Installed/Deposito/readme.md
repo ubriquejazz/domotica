@@ -30,11 +30,7 @@ Referencias
 
 ![](https://media-cdn.seeedstudio.com/media/catalog/product/cache/bb49d3ec4ee05b6f018e93f896b8a25d/1/-/1-101991041-rs485-750cm-ultrasonic-level-sensor-45font.jpg)
 
-Referencias
-- Protocolo ModBus RTU: [micropython](script.py)
-- Modbus RTU micropython: [web](https://how2electronics.com/modbus-rtu-with-raspberry-pi-pico-micropython/)
-
-
+Ver [protocolo](https://how2electronics.com/modbus-rtu-with-raspberry-pi-pico-micropython/) ModBus RTU y codigo [micropython](script.py)
 
 ## Pedido AliExpress
 
