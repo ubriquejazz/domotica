@@ -10,28 +10,31 @@ La raspberry recibe un mensaje UART y lo muestra en un gauge
 ## Aguas arriba
 
 - Alimentacion por panel solar 6V + MPPT + 18650
+- DIY or BUY aleman: [video](https://www.youtube.com/watch?v=jriRW4rGQp4&t=224s)
 
-**Option 1**
+### **Option 1**
 
 - SR04M Sensor ultrasonidos. MCU: A. Nano (R. Pico).
 - MCU lee el sensor, calcula la distancia y porcentaje
-- Firmware modo unidirectional cada 10 mins: see [code](main.ino)
+- Firmware modo unidirectional cada 120ms: see [code](main.ino)
 
 ![](fig/sensor.png)
 
-**Option 2**
+Referencias
+- Modo [auto](https://www.youtube.com/watch?v=n0hFgR4hYqY) del sensor
+- Placa + MPPT Japo: [video](https://www.youtube.com/watch?v=pTtVe7P_lIc)
+
+### **Option 2**
 
 - Seedstudio RS485, en modo bidireccional
-- Protocolo ModBus RTU: [micropython](script.py)
 
 ![](https://media-cdn.seeedstudio.com/media/catalog/product/cache/bb49d3ec4ee05b6f018e93f896b8a25d/1/-/1-101991041-rs485-750cm-ultrasonic-level-sensor-45font.jpg)
 
-## Referencias
-
-- DIY or BUY aleman: [video](https://www.youtube.com/watch?v=jriRW4rGQp4&t=224s)
-- MPTT Japo: [video](https://www.youtube.com/watch?v=pTtVe7P_lIc)
-- Ultrasonic + Arduino Indio: [video](https://www.youtube.com/watch?v=KeMevxyaI2g) 
+Referencias
+- Protocolo ModBus RTU: [micropython](script.py)
 - Modbus RTU micropython: [web](https://how2electronics.com/modbus-rtu-with-raspberry-pi-pico-micropython/)
+
+
 
 ## Pedido AliExpress
 
