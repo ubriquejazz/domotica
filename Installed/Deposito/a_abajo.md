@@ -1,19 +1,15 @@
 # Aguas abajo
 
-![](fig/sensor.png)
-
-Alternativas al Arduino Nano
-
+Opcion 1 - simplest
 - La raspberry recibe el mensaje UART y lo muestra en un gauge (node-red)
-- Este [esphome](https://esphome.io/components/sensor/jsn_sr04t/) lo expone en home-assistant
-- Hacer un **daisy chain** arduino + esp32 para poder mostrar el nivel un LCD
 
-## Alimentacion
+Opcion 2 - home-assistant
+- Este [esphome](https://esphome.io/components/sensor/jsn_sr04t/) es para el ultrasonido SR04M-2
 
-- Por grid de la casa
-- Por paneles + baterias de 12V
+Opcion 3 - con LCD local 
+- Hacer un **daisy chain** Pico + ESP32 para poder mostrar el nivel en un LCD
 
-## Red Wifi
+## Infraestructura (casa)
 
 - Flybox + SIM 4G (3 euros)
 - Home assistant (RPi4)
@@ -24,7 +20,8 @@ Alternativas al Arduino Nano
 
 - RP2040 Raspbery Pico, USB-C + LCD
 - Step-down 12V/24V a 5V (USB)
-
 - Módulo RS485 TTL para 100m
 
-![](fig/max485.png)
+| Nombre | Vista |
+|--------|-----------|
+| RS485   |  ![](fig/max485.png)
