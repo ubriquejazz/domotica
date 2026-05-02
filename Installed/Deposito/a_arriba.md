@@ -2,12 +2,36 @@
 
 ![](fig/sensor.png)
 
-- Alimentacion por panel solar 6V + MPPT + 18650
+- Alimentacion por panel solar 6V + MPPT + 18650 + 3V3 LDO
 - Placa + MPPT Japo: [video](https://www.youtube.com/watch?v=pTtVe7P_lIc)
 
 - Sensor ultrasonidos en modo [auto](https://www.youtube.com/watch?v=n0hFgR4hYqY) 
   - AJ-SR04M (R19 horizontal): [datasheet](https://www.fabian.com.mt/viewer/42585/pdf.pdf)
   - SR04M-2  (R vertical): no documentation
+
+## KiCAD
+
+Power input:
+- Conn_01x02 from CN3791 module
+- 3V3 LDO such as MCP1700-3302E
+
+MCP1700-3302E
+- 10µF input cap
+- 10µF output cap
+
+ESP32 + MAX3485
+- DI → TX; RO → RX
+- DE + RE tied → GPIO
+- 100µF bulk cap for ESP-VCC
+
+Sensor Ultrasonido
+- Conn_01x04 
+- Q_NMOS_GDS for VCC
+- ECHO → divider:
+10k (top); 
+15k (bottom); 
+midpoint → ESP32
+
 
 
 ## Material
