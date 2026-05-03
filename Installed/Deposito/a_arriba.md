@@ -11,28 +11,31 @@
 
 ## KiCAD
 
-Power input:
-- Conn_01x02 from CN3791 module
-- 3V3 LDO such as MCP1700-3302E
+Power Supply
 
-MCP1700-3302E
-- 10µF input cap
-- 10µF output cap
+- Conn_01x02 from CN3791 module
+- Polarity inversion zener (D1)
+- 3V3 LDO such as MCP1700-3302E
+  - 10µF input cap
+  - 10µF output cap
 
 ESP32 + MAX3485
+
 - DI → TX; RO → RX
 - DE + RE tied → GPIO
-- 100µF bulk cap for ESP-VCC
+- 100µF bulk cap for VCC
+- Conn_01x02 (screws, differential)
+- Dual TVS diode near connector (D2)
 
 Sensor Ultrasonido
-- Conn_01x04 
-- Q_NMOS_GDS for VCC
+
+- Conn_01x04 (pin)
+- Q_NMOS_GDS for GND(SR04M)
+  - 10k pull down (default off)
 - ECHO → divider:
 10k (top); 
 15k (bottom); 
 midpoint → ESP32
-
-
 
 ## Material
 
