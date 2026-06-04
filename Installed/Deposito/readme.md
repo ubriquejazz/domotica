@@ -3,11 +3,6 @@
 - Aguas [arriba](a_arriba.md)
 - Aguas [abajo](a_abajo.md)
 
-## Fotos PCB
-
-![](fig/ez430_01.PNG)
-![](fig/ez430_02.PNG)
-
 ## Pedido AliExpress
 
 - JSN-SR04T/AJ-SR04M Sensor Ultrasonico: [datasheet](https://www.fabian.com.mt/viewer/42585/pdf.pdf)
