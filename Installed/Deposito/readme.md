@@ -7,5 +7,11 @@
 
 - JSN-SR04T/AJ-SR04M Sensor Ultrasonico: [datasheet](https://www.fabian.com.mt/viewer/42585/pdf.pdf)
 - MPPT regulador de panel solar de 6V para batería de litio 3,7V 4,2V CN3791
-- Módulo RS485 MAX485 @ 5V (200 mA)
-- Módulo RS485 MAX485 @ 3V3 (20 mA)
+- Módulo RS485 MAX485 @ 5V: DE active high, RE# active low
+- Módulo RS485 MAX485 @ 3V3 (half duplex)
+
+| MAX485 @ 3V3 (20 mA) | MAX485 @ 5V (200 mA) |
+|----------------------|----------------------|
+| ![](fig/rs3485.PNG) | ![](fig/max485.png) |
+
+DE = RE# active high for TX
