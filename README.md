@@ -8,12 +8,17 @@ An ecleptic varity of project used at home;
         1. ESP32
         1. KiCad
 
+1. Deposito
+
+    - micros/MSP430/deposito: codigo en C
+    - micros/img: esquematico/layout KiCad
+    - iot-uah/Pr_Final: Web server 
+
 1. Installed (manuals)
     - Baliza IoT
     - Alarma Coati
     - Camper Solar
     - Radiadores Haverland
-    - Deposito, nivel de agua
     - DatouBoss Solar Inverter
 
 1. Home Assistant
