@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT, MUIE</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="">
+    <script src="config.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
+    <script src="functions.js" type="text/javascript"></script>
+</head>
+<body>
+    <h1>Lectura de sensores</h1>
+    <table>
+        <tr>
+            <td>Temperatura:</td>
+            <td id="temperatura">27 &ordm;C</td>
+            <td id="temp" style="height: 13px; width: 27px; background-color: #FF0000; display: inline-block;"></td>
+        </tr>
+        <tr>
+            <td>Corriente:</td>
+            <td id="corriente">30 mA</td>
+            <td id="ilu" style="height: 13px; width:27px; background-color:#00FFFF; display: inline-block;"></td>            
+        </tr>
+        <tr>
+            <td>Timestamp:</td>
+            <td id="timestamp">0</td>
+            <td id="cnt" style="width:200px"></td>            
+        </tr>
+        <tr>
+            <td>Threshold:</td>
+            <td id="threshold">?? mA</td>
+            <td id="thold" style="width:200px"></td>            
+        </tr>
+   </table>
+   <br><br><br>
+   <input type="button" class="button_large" onclick="startConnect()" value="Conectar">
+   <input type="button" class="button_large" onclick="startDisconnect()" value="Desconectar">
+   <textarea rows="1" class="areaoftext" id="boilerStatus" disabled></textarea>
+   <br>
+   <div id="messages"></div>
+</body>
+</html>
