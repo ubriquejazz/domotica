@@ -1,0 +1,10 @@
+{
+    "mqtt_server": "192.168.1.104",
+    "mqtt_user": "alumno",
+    "mqtt_pass": "clave123",
+    "params_set": "home/params/set",
+    "params_get": "home/params/get",
+    "params_status": "home/params/status",
+    "relay_set": "home/relay/set",
+    "relay_status": "home/relay/status"
+}
