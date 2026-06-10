@@ -27,12 +27,7 @@ El rele de la pizero simula una alarma. Se activa cuando el valor de voltage med
 
 La pizero publica este valor en el topic_threshold. Suponemos que la pizero es solo el interfaz HMI del sistema, con lo que no tiene capacidad de decision sobre el rele (no esta subscrita al topic_esp).
 
-En node-red se muestra en un gauge el valor de voltage / corriente de la bateria y valor del threshold.
-
-| NRed | UI |
-|------|----|
-
-A parte de Node-Red, la RPi4 tendra otro servidor web local con el valor de corriente medido. Si esta por debajo del **threshold** se muestra de color azul (rojo de otro modo). 
+La RPi4 tendra un servidor web local con el valor de corriente medido. Si esta por debajo del **threshold** se muestra de color azul (rojo de otro modo). 
 
 | Corriente OK |  Alarm |
 |-----|--------|
@@ -121,7 +116,7 @@ Se puede simular un valor JSON desde la linea de comando:
 
 Nota: aunque el campo se llama **temp**, se es esta usando la funcion **get_current**(). Se puede ir jugando con el resto de funciones de la API: get_bus_voltage(), get_shunt_voltage(), etc.
 
-#### Web Server (Pi4)
+#### Raspberry Pi4 (Web Server)
 
 Extracto de Javascript de la RPi4
 
