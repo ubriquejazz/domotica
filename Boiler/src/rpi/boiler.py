@@ -7,13 +7,31 @@ import paho.mqtt.client as mqtt # type: ignore
 import Adafruit_DHT # type: ignore
 from controller import *
 
-with open('bolier.json', 'r') as f:
-    dic = json.load(f)
+with open('config.json', 'r') as f:
+    infra_config = json.load(f)
     f.close()
 
-controller = Controller.fromdict(dic)
+with open('bolier.json', 'r') as f:
+    user_config = json.load(f)
+    f.close()
+
+controller = Controller.fromdict(user_config)
 boiler_st = None
-temperature = None
+current_temperature = None
+
+# ---- 2. Map Constants from config.json ----
+MQTT_SERVER   = infra_config["mqtt_server"]
+MQTT_PORT     = infra_config.get("mqtt_port", 1883)
+MQTT_USER     = infra_config.get("mqtt_user", "")
+MQTT_PASS     = infra_config.get("mqtt_pass", "")
+
+T_RELAY_SET   = infra_config["topic_relay_set"]
+T_RELAY_STATUS= infra_config["topic_relay_status"]
+T_PARAMS_GET  = infra_config["topic_params_get"]
+PREFIX_SET    = infra_config["topic_params_set_prefix"]      # "home/params/set/"
+PREFIX_STATUS = infra_config["topic_params_get_prefix"]      # "home/params/status/"
+
+UPDATE_INTERVAL = infra_config.get("update_interval_seconds", 120)
 
 def on_message(client, userdata, message):
     set_flag = False
