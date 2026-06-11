@@ -19,26 +19,27 @@ T_RELAY_STATUS = config["topic_relay_status"]   # "home/relay/status"
 
 def on_message(topic, msg):
     topic_str = topic.decode("utf-8")
-    msg_str = msg.decode("utf-8")
+    payload_str = msg.decode("utf-8").strip()
     
-    print(f"Message arrived [{topic_str}] {msg_str}")
-    
-    if topic_str == "home/relay/set":
-        if msg_str == "1":
-            LED.value(1)    # HIGH
-            RELAY.value(0)  # LOW
-        elif msg_str == "0":
-            LED.value(0)    # LOW
-            RELAY.value(1)  # HIGH
+    print("Received message -> [{}]: {}".format(topic_str, payload_str))
+
+    if topic_str == T_RELAY_SET:
+        # Active-Low logic mapping matching boiler.cpp requirements:
+        # "1" or "ON"  -> Drop Pin to 0V (GND) to activate the relay contactor
+        # "0" or "OFF" -> Drive Pin to 3.3V (VCC) to turn off the heating loop
+        if payload_str == "1" or payload_str.upper() == "ON":
+            LED.value(1)       # Status Indicator ON
+            RELAY.value(0)     # ACTIVE LOW: Relay closed circuit (Heater ON)
+            print("Boiler Circuit Status -> ENERGIZED")
+        elif payload_str == "0" or payload_str.upper() == "OFF":
+            LED.value(0)       # Status Indicator OFF
+            RELAY.value(1)     # ACTIVE LOW: Relay open circuit (Heater OFF)
+            print("Boiler Circuit Status -> DE-ENERGIZED")
             
-    # Publicar el estado actual en formato JSON (siguiendo tu nueva filosofía)
-    estado = "ON" if RELAY.value() == 0 else "OFF"
-    payload = {
-        "status": estado,
-        "client_id": boot.client_id.decode("utf-8")
-    }
-    msg_json = ujson.dumps(payload).encode('utf-8')
-    client.publish(topic_pub, msg_json)
+        # Immediately confirm current physical state back to the telemetry status path
+        current_state = "ON" if RELAY.value() == 0 else "OFF"
+        client.publish(T_RELAY_STATUS, current_state, retain=True)
+
 
 def connect_and_subscribe():
     client = MQTTClient(client_id, mqtt_server, port=1883)
