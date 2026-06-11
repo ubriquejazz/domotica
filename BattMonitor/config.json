@@ -3,9 +3,6 @@
     "mqtt_user": "alumno",
     "mqtt_pass": "clave123",
     "topic_esp": "esp/ina",
-    "topic_trig": "camera/trig",
-    "topic_photo": "camera/photo",
     "topic_thold": "zero/thold",
-    "topic_relay": "zero/relay",
-    "topic_temp" : "disco/sensor"
+    "topic_relay": "zero/relay"
 }
