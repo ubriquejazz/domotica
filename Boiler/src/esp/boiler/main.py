@@ -1,14 +1,13 @@
 import time
-import machine
 import ujson
-from umqtt.simple import MQTTClient
-
-RELAY = machine.Pin(0, machine.Pin.OUT, value=1)  # Inicializa en HIGH
-LED = machine.Pin(2, machine.Pin.OUT, value=1)    # Inicializa en HIGH
 
 with open("config.json", "r") as f:
     config = ujson.load(f)
     f.close()
+
+pin = int(config['relay_pin'])
+broadcast_interval = int(config['update_interval_min'])
+RELAY = machine.Pin(pin, machine.Pin.OUT, value=1)  # Inicializa en HIGH
 
 MQTT_SERVER = config["mqtt_server"]
 MQTT_USER = config.get("mqtt_user", "")
@@ -42,21 +41,32 @@ def on_message(topic, msg):
 
 
 def connect_and_subscribe():
-    client = MQTTClient(client_id, mqtt_server, port=1883)
+    client_id = "esp32-boiler-actuator"
+    
+    # Configure parameter arrays safely supporting empty security configurations
+    user_auth = MQTT_USER if MQTT_USER != "" else None
+    pass_auth = MQTT_PASS if MQTT_PASS != "" else None
+    
+    client = MQTTClient(
+        client_id=client_id, 
+        server=MQTT_SERVER, 
+        user=user_auth, 
+        password=pass_auth,
+        keepalive=60
+    )
     
     client.set_callback(on_message)
     client.connect()
-    print('Connected to %s MQTT broker' % boot.mqtt_server)
+    print("Connected to Mosquitto Broker at {} successfully.".format(MQTT_SERVER))
     
-    # Nos suscribimos a los tópicos necesarios
-    client.subscribe(topic_sub)
-    client.subscribe(b"home/relay/get")
+    # Register subscription filters matching the structural infrastructure topic contracts
+    client.subscribe(T_RELAY_SET)
+    print("Subscribed to command channel: {}".format(T_RELAY_SET))
     
-    # Publicamos anuncio de conexión exitosa
-    client.publish(topic_pub, b"(Re)Connected")
+    # Announce presence on bootup
+    initial_state = "OFF" if RELAY.value() == 1 else "ON"
+    client.publish(T_RELAY_STATUS, initial_state, retain=True)
     return client
-
-
 
 try:
     client = connect_and_subscribe()
@@ -66,21 +76,14 @@ except Exception as error:
     machine.reset()
 
 last_status_broadcast = 0
-broadcast_interval = 10  # Enviar estado cada 10 segundos de forma cíclica
-
 while True:
     try:
         client.check_msg()
         
         if (time.time() - last_status_broadcast) > broadcast_interval:
-            estado = "ON" if RELAY.value() == 0 else "OFF"
-            payload = {
-                "relay_status": estado,
-                "uptime_s": time.time()
-            }
-            msg_json = ujson.dumps(payload).encode('utf-8')
-            
-            client.publish(topic_pub, msg_json)
+            current_state = "ON" if RELAY.value() == 0 else "OFF"
+            client.publish(T_RELAY_STATUS, current_state, retain=True)
+
             last_status_broadcast = time.time()
             
         time.sleep(0.1) # Pequeño respiro para el procesador
