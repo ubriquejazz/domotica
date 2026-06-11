@@ -45,7 +45,7 @@ function startConnect() {
 // Called when the client connects
 function onConnect() {
     console.log("MQTT Broker Connection Successful.");
-    
+
     document.getElementById("boilerStatus").style.color = "#3d434c";
 
     // Print output for the user in the messages div
@@ -69,6 +69,7 @@ function onConnect() {
 
 // Called when the client loses its connection
 function onConnectionLost(responseObject) {
+    console.log("Broker Link Terminated: " + responseObject.errorMessage);
     document.getElementById("messages").innerHTML += '<span>ERROR: Connection lost</span><br/>';
     if (responseObject.errorCode !== 0) {
         document.getElementById("messages").innerHTML += '<span>ERROR: ' + + responseObject.errorMessage + '</span><br/>';
@@ -132,8 +133,11 @@ function onMessageArrived(message) {
 
 // Called when the disconnection button is pressed
 function startDisconnect() {
+    if (client) {
+        client.disconnect();
+        console.log("Disconnected cleanly.");
+    }
     document.getElementById("boilerStatus").style.color = "#3d434c";
-    client.disconnect();
     document.getElementById("messages").innerHTML += '<span>Disconnected</span><br/>';
 }
 
