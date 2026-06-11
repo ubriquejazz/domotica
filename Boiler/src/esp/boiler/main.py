@@ -10,11 +10,12 @@ with open("config.json", "r") as f:
     config = ujson.load(f)
     f.close()
 
-mqtt_server = config["mqtt_server"]
-mqtt_user = config["mqtt_user"]
-mqtt_pass = config["mqtt_pass"]
-topic_sub = b"home/relay/set"
-topic_pub = b"home/relay/status"
+MQTT_SERVER = config["mqtt_server"]
+MQTT_USER = config.get("mqtt_user", "")
+MQTT_PASS = config.get("mqtt_pass", "")
+
+T_RELAY_SET = config["topic_relay_set"]         # "home/relay/set"
+T_RELAY_STATUS = config["topic_relay_status"]   # "home/relay/status"
 
 def on_message(topic, msg):
     topic_str = topic.decode("utf-8")
@@ -54,18 +55,14 @@ def connect_and_subscribe():
     client.publish(topic_pub, b"(Re)Connected")
     return client
 
-def restart_and_reconnect():
-    print('Failed to connect or network error. Reconnecting via reset...')
-    # Hacemos parpadear el LED rápido antes de reiniciar para aviso visual
-    for _ in range(10):
-        LED.value(not LED.value())
-        time.sleep(0.1)
-    machine.reset()  # Reinicio físico del ESP32
+
 
 try:
     client = connect_and_subscribe()
-except OSError as e:
-    restart_and_reconnect()
+except Exception as error:
+    print("Failed to handshake broker instance. Initializing soft boot reset window...", error)
+    time.sleep(10)
+    machine.reset()
 
 last_status_broadcast = 0
 broadcast_interval = 10  # Enviar estado cada 10 segundos de forma cíclica
