@@ -1,30 +1,45 @@
 var client = null;
 
+var MQTT_SERVER = window.APP_CONFIG.infra.mqtt_server;
+
+// Topic definitions mapped from config.json
+var PREFIX_SET    = window.APP_CONFIG.infra.topic_params_set_prefix;    // "home/params/set/"
+var PREFIX_STATUS = window.APP_CONFIG.infra.topic_params_get_prefix;    // "home/params/status/"
+var T_PARAMS_GET  = window.APP_CONFIG.infra.topic_params_get;           // "home/params/get"
+var T_RELAY_SET   = window.APP_CONFIG.infra.topic_relay_set;           // "home/relay/set"
+
+
 // Called after form input is processed
 function startConnect() {
     document.getElementById("boilerStatus").style.color = "#3d434c";
 
-    // Generate a random client ID
-    var clientID = "clientID-" + parseInt(Math.random() * 1000);
+    // Generate a unique client ID to prevent broker collision disconnects
+    var clientID = "boiler-frontend-" + parseInt(Math.random() * 1000);
+    var port = "8080"; 
 
-    // Fetch the hostname/IP address and port number from the form
-    var host = "192.168.1.98";  //document.getElementById("host").value;
-    var port = "8080"; 			//document.getElementById("port").value;
-
-    // Print output for the user in the messages div
+    // Log connection updates directly to the UI messages div
     var messagesDiv = document.getElementById("messages");
-    messagesDiv.innerHTML += '<span>Connecting to: ' + host + ' on port: ' + port + '</span><br/>';
-    messagesDiv.innerHTML += '<span>Using the following client value: ' + clientID + '</span><br/>';
+    if (messagesDiv) {
+        messagesDiv.innerHTML += '<span>Connecting to: ' + MQTT_SERVER + ' on port: ' + port + '</span><br/>';
+        messagesDiv.innerHTML += '<span>Client ID allocated: ' + clientID + '</span><br/>';
+    }
 
-    // Initialize new Paho client connection, callback handlers
-    client = new Paho.MQTT.Client(host, Number(port), clientID);
+    // Initialize the Paho client running over WebSockets
+    client = new Paho.MQTT.Client(MQTT_SERVER, MQTT_PORT, clientID);
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
 
-    // Connect the client, if successful, call onConnect function
-    client.connect({
-        onSuccess: onConnect,
-    });
+    var options = {
+        onSuccess: onConnect
+    };
+
+    // Safely apply authentication if defined in config.json
+    if (window.APP_CONFIG.infra.mqtt_user && window.APP_CONFIG.infra.mqtt_pass) {
+        options.userName = window.APP_CONFIG.infra.mqtt_user;
+        options.password = window.APP_CONFIG.infra.mqtt_pass;
+    }
+
+    client.connect(options);
 }
 
 // Called when the client connects
