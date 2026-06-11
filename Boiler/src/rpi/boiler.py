@@ -86,10 +86,30 @@ def on_message(client, userdata, message):
             f.write(conf_str)
             f.close()
 
+def recalculate_heating():
+    """Evaluates current room telemetry against active targets immediately."""
+    global boiler_st
+    if current_temperature is None:
+        return
+
+    now = datetime.now()
+    signal = controller.control(current_temperature, now.time())
+    target = controller.get_target_temp()
+    
+    log_str = f"{now.strftime('%Y/%m/%d_%H:%M:%S')} Temp: {current_temperature:.1f}°C, Target: {target:.1f}°C"
+
+    if signal == ControlResult.TURN_ON:
+        client.publish(T_RELAY_SET, 1, qos=1)
+        logging.info(f"{log_str} | Command -> TURN_ON")
+        boiler_st = True
+    elif signal == ControlResult.TURN_OFF:
+        client.publish(T_RELAY_SET, 0, qos=1)
+        logging.info(f"{log_str} | Command -> TURN_OFF")
+        boiler_st = False
+        
 dht_pin_attr = getattr(board, f"D{infra_config['dht_pin']}")
 dht_device = adafruit_dht.DHT11(dht_pin_attr)
 
-# ---- 4. Network Client Subscriptions ----
 client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, "RPi_Boiler_Core")
 if MQTT_USER and MQTT_PASS:
     client.username_pw_set(MQTT_USER, MQTT_PASS)
@@ -115,38 +135,27 @@ print("**************** Automatic Boiler Program Running ***************")
 
 last_sensor_read = 0
 
-# Main loop
-while True:
-
-    # Read sensor and time (first read is deprecated)
-    humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, DHT_PIN_DATA)
-    humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, DHT_PIN_DATA)
-    now = datetime.now()
-    log_str = now.strftime("%Y/%m/%d_%H:%M:%S")
-
-    if humidity is not None and temperature is not None:
-        log_str += " Temp={0:0.1f}ºC Hum={1:0.1f}%".format(temperature, humidity)
-        client.publish("home/params/status/curr_temp", "{0:0.1f}".format(temperature))
-        # Control
-        signal = controller.control(temperature, now.time())
-        log_str += " Target={0:0.1f}ºC".format(controller.get_target_temp())
-        if signal == ControlResult.TURN_ON:
-            client.publish("home/relay/set", 1)
-            log_str += " ON"
-            boiler_st = True
-        elif signal == ControlResult.TURN_OFF:
-            client.publish("home/relay/set", 0)
-            log_str += " OFF"
-            boiler_st = False
-    else:
-        log_str += " Failed to retrieve data from sensor"
-
-    # Print
-    logging.info(log_str)
-
-    # Wait
+try:
     while True:
-        t.sleep(1)
-        now = datetime.now()
-        if ((now.minute % UPDATE_MINUTE) == 0) and (now.second == 0):
-            break
+        current_time = t.time()
+        
+        # Non-blocking evaluation window check
+        if (current_time - last_sensor_read) >= UPDATE_INTERVAL:
+            try:
+                humidity = dht_device.humidity
+                temp = dht_device.temperature
+
+                if humidity is not None and temp is not None:
+                    current_temperature = float(temp)
+                    client.publish(f"{PREFIX_STATUS}curr_temp", f"{current_temperature:.1f}", retain=True)
+                    recalculate_heating()
+            except RuntimeError as error:
+                logging.warning(f"DHT background read noise: {error.message}")
+            
+            last_sensor_read = current_time
+
+        t.sleep(0.5)
+
+except KeyboardInterrupt:
+    print("\nClosing background threads...")
+    dht_device.exit()
