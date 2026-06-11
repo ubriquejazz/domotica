@@ -6,6 +6,13 @@ from umqtt.simple import MQTTClient
 RELAY = machine.Pin(0, machine.Pin.OUT, value=1)  # Inicializa en HIGH
 LED = machine.Pin(2, machine.Pin.OUT, value=1)    # Inicializa en HIGH
 
+with open("config.json", "r") as f:
+    config = ujson.load(f)
+    f.close()
+
+mqtt_server = config["mqtt_server"]
+mqtt_user = config["mqtt_user"]
+mqtt_pass = config["mqtt_pass"]
 topic_sub = b"home/relay/set"
 topic_pub = b"home/relay/status"
 
@@ -33,9 +40,7 @@ def on_message(topic, msg):
     client.publish(topic_pub, msg_json)
 
 def connect_and_subscribe():
-    # Si tu broker no usa usuario/contraseña, quita esos parámetros
-    # client = MQTTClient(boot.client_id, boot.mqtt_server)
-    client = MQTTClient(boot.client_id, boot.mqtt_server, port=1883)
+    client = MQTTClient(client_id, mqtt_server, port=1883)
     
     client.set_callback(on_message)
     client.connect()

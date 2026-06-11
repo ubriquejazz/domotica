@@ -7,7 +7,7 @@ import paho.mqtt.client as mqtt # type: ignore
 import Adafruit_DHT # type: ignore
 from controller import *
 
-with open('conf.json', 'r') as f:
+with open('bolier.json', 'r') as f:
     dic = json.load(f)
     f.close()
 
