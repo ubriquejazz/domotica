@@ -1,11 +1,15 @@
 import logging
 import json
-import os
+import os, sys
 import time as t
 from datetime import datetime
 import paho.mqtt.client as mqtt # type: ignore
 import Adafruit_DHT # type: ignore
 from controller import *
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+LOG_DIR = os.path.join(BASE_DIR, 'logs')
+os.makedirs(LOG_DIR, exist_ok=True)
 
 with open('config.json', 'r') as f:
     infra_config = json.load(f)
@@ -82,31 +86,34 @@ def on_message(client, userdata, message):
             f.write(conf_str)
             f.close()
 
-print("**************** Automatic Boiler program ***************")
-print(dic)
-# Configuration
-UPDATE_MINUTE = 2
-DHT_SENSOR = 11
-DHT_PIN_DATA = 4
+dht_pin_attr = getattr(board, f"D{infra_config['dht_pin']}")
+dht_device = adafruit_dht.DHT11(dht_pin_attr)
+
+# ---- 4. Network Client Subscriptions ----
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, "RPi_Boiler_Core")
+if MQTT_USER and MQTT_PASS:
+    client.username_pw_set(MQTT_USER, MQTT_PASS)
+client.on_message = on_message
+
 
 # Subscribe
-client = mqtt.Client("RPi")
-client.connect("localhost")
-client.subscribe("home/relay/status")
-client.subscribe("home/params/set/#")
-client.subscribe("home/params/get")
-#client.subscribe("home/room/status")
-client.on_message = on_message
-client.loop_start()
+try:
+    client.connect(MQTT_SERVER, MQTT_PORT)
+    client.subscribe(T_RELAY_STATUS)
+    client.subscribe(f"{PREFIX_SET}#")
+    client.subscribe(T_PARAMS_GET)
+    client.loop_start()
+except Exception as e:
+    print(f"Network Fault linking Broker: {e}")
+    sys.exit(1)
 
 # Log file
-for handler in logging.root.handlers[:]:
-    logging.root.removeHandler(handler)
-now = datetime.now()
-now_str = now.strftime("%Y%m%d_%H%M")
-log_file = "./logs/boiler_" + now_str + ".log"
-logging.basicConfig(filename = log_file, level = logging.INFO)
-print("- File " + log_file + " created")
+now_str = datetime.now().strftime("%Y%m%d_%H%M")
+logging.basicConfig(filename=os.path.join(LOG_DIR, f"boiler_{now_str}.log"), level=logging.INFO)
+
+print("**************** Automatic Boiler Program Running ***************")
+
+last_sensor_read = 0
 
 # Main loop
 while True:
