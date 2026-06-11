@@ -7,6 +7,7 @@ var PREFIX_SET    = window.APP_CONFIG.infra.topic_params_set_prefix;    // "home
 var PREFIX_STATUS = window.APP_CONFIG.infra.topic_params_get_prefix;    // "home/params/status/"
 var T_PARAMS_GET  = window.APP_CONFIG.infra.topic_params_get;           // "home/params/get"
 var T_RELAY_GET   = window.APP_CONFIG.infra.topic_relay_status;         // "home/relay/status"
+var T_RELAY_STATUS = window.APP_CONFIG.infra.topic_relay_status;      // "home/relay/status"
 var T_RELAY_SET   = window.APP_CONFIG.infra.topic_relay_set;           // "home/relay/set"
 
 // Called after form input is processed
@@ -100,22 +101,22 @@ function onMessageArrived(message) {
     
     // Update specific HTML elements based on the received topic and value
     switch (topic) {
-        case "home/params/status/start_time":
-            document.getElementById("startTime").innerHTML = value;
+        case PREFIX_STATUS + "start_time":
+             document.getElementById("startTime").innerHTML = value;
             break;
-        case "home/params/status/stop_time":
+        case PREFIX_STATUS + "stop_time":
             document.getElementById("stopTime").innerHTML = value;
             break;
-        case "home/params/status/user_temp":
+        case PREFIX_STATUS + "user_temp":
             document.getElementById("userTemp").innerHTML = value + ' ºC';
             break;
-        case "home/params/status/back_temp":
+        case PREFIX_STATUS + "back_temp":
             document.getElementById("backTemp").innerHTML = value + ' ºC';
-            break;
-        case "home/params/status/curr_temp":
+            break;       
+        case PREFIX_STATUS + "curr_temp":
             document.getElementById("currentTemp").innerHTML = value + ' ºC';
             break;
-        case "home/relay/status":
+        case T_RELAY_STATUS:
             document.getElementById("boilerStatus").innerHTML = value;
             if (value == "OFF") {
                 document.getElementById("boilerStatus").style.color = "#dd0000";

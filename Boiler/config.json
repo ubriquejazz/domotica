@@ -5,6 +5,8 @@
     
     "topic_relay_set": "home/relay/set",
     "topic_relay_status": "home/relay/status",
+    "topic_room_status": "home/room/status",
+    
     "topic_params_get": "home/params/get",
     "topic_params_set_prefix": "home/params/set/",
     "topic_params_get_prefix": "home/params/status/",
