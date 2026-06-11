@@ -38,54 +38,58 @@ PREFIX_STATUS = infra_config["topic_params_get_prefix"]      # "home/params/stat
 UPDATE_INTERVAL = infra_config.get("update_interval_seconds", 120)
 
 def on_message(client, userdata, message):
+    global current_temperature
     set_flag = False
-    if message.topic == "home/params/set/start_time":
-        param = str(message.payload.decode("utf-8"))
-        client.publish("home/params/status/start_time", param)
-        start = datetime.strptime(param, "%H:%M")
-        controller.set_time_start(start.time())
-        logging.info("Set Param Time Start: " + param + "h")
-        dic["time_start"] = param
-        set_flag = True
-    elif message.topic == "home/params/set/stop_time":
-        param = str(message.payload.decode("utf-8"))
-        client.publish("home/params/status/stop_time", param)
-        stop = datetime.strptime(param, "%H:%M")
-        controller.set_time_stop(stop.time())
-        logging.info("Set Param Time Stop: " + param + "h")
-        dic["time_stop"] = param
-        set_flag = True
-    elif message.topic == "home/params/set/user_temp":
-        param = float(message.payload.decode("utf-8"))
-        client.publish("home/params/status/user_temp", param)
-        controller.set_user_temp(param)
-        logging.info("Set Param User Temp: " + str(param) + "ºC")
-        dic["user_temp"] = param
-        set_flag = True
-    elif message.topic == "home/params/set/back_temp":
-        param = float(message.payload.decode("utf-8"))
-        client.publish("home/params/status/back_temp", param)
-        controller.set_back_temp(param)
-        logging.info("Set Param Back Temp: " + str(param) + "ºC")
-        dic["back_temp"] = param
-        set_flag = True
-    elif message.topic == "home/params/get":
-        print("Web user!")
-        client.publish("home/params/status/curr_temp", "{0:0.1f}".format(temperature))
-        client.publish("home/params/status/start_time", controller.get_time_start().strftime("%H:%M"))
-        client.publish("home/params/status/stop_time", controller.get_time_stop().strftime("%H:%M"))
-        client.publish("home/params/status/user_temp", controller.get_user_temp())
-        client.publish("home/params/status/back_temp", controller.get_back_temp())
-    elif message.topic == "home/relay/status":
-        print("ESP access!")
-        logging.info("Boiler Feedback: " + str(message.payload.decode("utf-8")))
-        # do nothing, the esp32 is answering
-    if set_flag == True:
-        conf_str = json.dumps(dic, indent=4)
-        with open('conf.json', 'w') as f:
-            f.write(conf_str)
-            f.close()
+    topic = message.topic
+    payload = message.payload.decode("utf-8").strip()
 
+    try:
+        if topic == f"{PREFIX_SET}start_time":
+            client.publish(f"{PREFIX_STATUS}start_time", payload, retain=True)
+            start = datetime.strptime(payload, "%H:%M")
+            controller.set_time_start(start.time())
+            user_config["time_start"] = payload
+            set_flag = True
+
+        elif topic == f"{PREFIX_SET}stop_time":
+            client.publish(f"{PREFIX_STATUS}stop_time", payload, retain=True)
+            stop = datetime.strptime(payload, "%H:%M")
+            controller.set_time_stop(stop.time())
+            user_config["time_stop"] = payload
+            set_flag = True
+
+        elif topic == f"{PREFIX_SET}user_temp":
+            val = float(payload)
+            client.publish(f"{PREFIX_STATUS}user_temp", val, retain=True)
+            controller.set_user_temp(val)
+            user_config["user_temp"] = val
+            set_flag = True
+
+        elif topic == f"{PREFIX_SET}back_temp":
+            val = float(payload)
+            client.publish(f"{PREFIX_STATUS}back_temp", val, retain=True)
+            controller.set_back_temp(val)
+            user_config["back_temp"] = val
+            set_flag = True
+
+        elif topic == T_PARAMS_GET:
+            # Synchronize loading views with a clean parameter state dump
+            if current_temperature is not None:
+                client.publish(f"{PREFIX_STATUS}curr_temp", f"{current_temperature:.1f}")
+            client.publish(f"{PREFIX_STATUS}start_time", controller.get_time_start().strftime("%H:%M"))
+            client.publish(f"{PREFIX_STATUS}stop_time", controller.get_time_stop().strftime("%H:%M"))
+            client.publish(f"{PREFIX_STATUS}user_temp", controller.get_user_temp())
+            client.publish(f"{PREFIX_STATUS}back_temp", controller.get_back_temp())
+
+        # CRITICAL FIX: Only modify and write boiler.json, leaving config.json intact
+        if set_flag:
+            with open(USER_CONFIG_PATH, 'w') as f:
+                json.dump(user_config, f, indent=4)
+            recalculate_heating()
+
+    except Exception as e:
+        logging.error(f"Error handling UI event on topic {topic}: {e}")
+        
 def recalculate_heating():
     """Evaluates current room telemetry against active targets immediately."""
     global boiler_st
@@ -106,7 +110,7 @@ def recalculate_heating():
         client.publish(T_RELAY_SET, 0, qos=1)
         logging.info(f"{log_str} | Command -> TURN_OFF")
         boiler_st = False
-        
+
 dht_pin_attr = getattr(board, f"D{infra_config['dht_pin']}")
 dht_device = adafruit_dht.DHT11(dht_pin_attr)
 
