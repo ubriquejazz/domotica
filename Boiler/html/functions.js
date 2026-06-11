@@ -6,8 +6,8 @@ var MQTT_SERVER = window.APP_CONFIG.infra.mqtt_server;
 var PREFIX_SET    = window.APP_CONFIG.infra.topic_params_set_prefix;    // "home/params/set/"
 var PREFIX_STATUS = window.APP_CONFIG.infra.topic_params_get_prefix;    // "home/params/status/"
 var T_PARAMS_GET  = window.APP_CONFIG.infra.topic_params_get;           // "home/params/get"
+var T_RELAY_GET   = window.APP_CONFIG.infra.topic_relay_status;         // "home/relay/status"
 var T_RELAY_SET   = window.APP_CONFIG.infra.topic_relay_set;           // "home/relay/set"
-
 
 // Called after form input is processed
 function startConnect() {
@@ -44,23 +44,27 @@ function startConnect() {
 
 // Called when the client connects
 function onConnect() {
+    console.log("MQTT Broker Connection Successful.");
+    
     document.getElementById("boilerStatus").style.color = "#3d434c";
 
     // Print output for the user in the messages div
     var messagesDiv = document.getElementById("messages");
     messagesDiv.innerHTML += '<span>Subscribing to: home/#</span><br/>';
 
-    // Subscribe to the requested topic
-    client.subscribe("home/#");
+    // Subscribe using the dynamic topics from config.json
+    client.subscribe(PREFIX_STATUS + "#"); 
+    client.subscribe(T_RELAY_SET);
 
+    // Send a empty trigger command to sync UI elements with the hardware's active profile
+    var getMessage = new Paho.MQTT.Message(" ");
+    getMessage.destinationName = T_PARAMS_GET;
+    client.send(getMessage);
+    
     // Send update commands
     var message1 = new Paho.MQTT.Message("OFF");
-    message1.destinationName = "home/relay/status";
+    message1.destinationName = T_RELAY_SET;
     client.send(message1);
-
-    var message2 = new Paho.MQTT.Message("");
-    message2.destinationName = "home/params/get";
-    client.send(message2);
 }
 
 // Called when the client loses its connection
