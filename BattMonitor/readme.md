@@ -1,16 +1,12 @@
 # Battery Monitor
 
-Now that all scripts are using the correct data variables, topics, and libraries, here is how a full cycle in your IoT ecosystem flows:
+**Abstract** - here is how a full cycle in your IoT ecosystem flows:
 
-The Threshold Set: You press Button A on your Raspberry Pi Zero. It publishes "4.7" to zero/thold.
-
-The Web Updates: Your Web dashboard receives this via its subscription to zero/thold, printing "Nuevo threshold (zero) = 4.7" and displaying 4.7 mA on your screen.
-
-The Sensor Read: The ESP32 evaluates the current drawn from its INA3221 chip, packages it up as {"temp": current_mA, "count": count}, and fires it off to esp/ina.
-
-The Automation/Logic Trigger: The Web Dashboard checks if the current drops below your threshold (corriente < threshold). If it does, it dynamically commands switchRelay("ON") over the network to zero/relay.
-
-The Physical Response: This second Raspberry Pi hears "ON" on zero/relay and snaps its physical low-level relay pin shut.
+- The Threshold Set: You press Button A on your Raspberry Pi Zero. It publishes "4.7" to zero/thold.
+- The Web Updates: Your Web dashboard receives this via its subscription to zero/thold, printing "Nuevo threshold (zero) = 4.7" and displaying 4.7 mA on your screen.
+- The Sensor Read: The ESP32 evaluates the current drawn from its INA3221 chip, packages it up as {"temp": current_mA, "count": count}, and fires it off to the topic esp/ina.
+- The Automation: The Web Dashboard checks if the current drops below your threshold (corriente < threshold). If it does, it dynamically commands switchRelay("ON") over the network to zero/relay topic.
+- The Physical Response: A second Raspberry Pi Zero hears "ON" on zero/relay and snaps its physical low-level relay pin shut.
 
 1. Introduccion
 2. Componentes
