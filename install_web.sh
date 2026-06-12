@@ -1,5 +1,7 @@
 #!/bin/bash
 
+WEB_ROOT="/var/www/html"
+
 # 1. Generate the config.js file locally
 echo "window.APP_CONFIG = $(cat config.json);" > config.js
 
@@ -8,10 +10,10 @@ mv config.js ./rpi4/
 
 # 3. Copy the entire contents of your project folder to the lighttpd directory
 # Change /var/www/html if your lighttpd is serving from a different folder
-sudo cp -r ./rpi4/. /var/www/html/
+sudo cp -r ./rpi4/ "$WEB_ROOT"
 
-# 4. Set the owner and group to www-data so lighttpd can read them
-sudo chown -R www-data:www-data /var/www/html/
+# Apply safe permissions assignments for your web daemon
+sudo chown -R www-data:www-data "$WEB_ROOT"
+sudo find "$WEB_ROOT" -type f -exec chmod 644 {} +
 
-# 5. Fix permissions (644 for files so they are readable by the browser)
-sudo find /var/www/html/ -type f -exec chmod 644 {} +
+echo "Web compilation successful! Infrastructure and Runtime profiles deployed."

@@ -9,8 +9,11 @@ echo "  infra: $(cat config.json)," >> config.js
 echo "  runtime: $(cat boiler.json)" >> config.js
 echo "};" >> config.js
 
+# Move the file into your local project development directory
+mv config.js ./html/
+
 # Deploy dependencies to your active web server workspace directory
-sudo cp config.js index.html functions.js style.css "$WEB_ROOT/"
+sudo cp -r ./html/ "$WEB_ROOT/"
 
 # Apply safe permissions assignments for your web daemon
 sudo chown -R www-data:www-data "$WEB_ROOT"
