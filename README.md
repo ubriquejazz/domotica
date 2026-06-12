@@ -2,17 +2,14 @@
 
 An ecleptic varity of project used at home;
 
-1. Boiler based on MQTT Clients
-    1. Raspberry 
-    1. Hardware
-        1. ESP32
-        1. KiCad
+1. Battery monitor
+
+1. Boiler 
 
 1. Deposito
 
     - micros/MSP430/deposito: codigo en C
     - micros/img: esquematico/layout KiCad
-    - iot-uah/Pr_Final: Web server 
 
 1. Installed (manuals)
     - Baliza IoT
