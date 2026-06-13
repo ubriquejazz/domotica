@@ -2,5 +2,5 @@ window.APP_CONFIG = {
     "mqtt_server": "192.168.1.104",
     "mqtt_user": "alumno",
     "mqtt_pass": "clave123",
-    "topic_temp" : "disco/sensor"
+    "topic_temp" : "tanque/ciclos"
 };

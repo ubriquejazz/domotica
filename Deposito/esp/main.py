@@ -3,24 +3,21 @@ from lcd1602 import LCD
 import utime
 
 def process_meas(ciclos: int):
-    # 1. Calculate values using integer division (//)
+    # 1. Calcular distancia base
     distancia_cm = ciclos // 3  
-    altura_agua_cm = 220 - distancia_cm
-
-    # 2. Case: Tank Full / Dead Zone
+    
+    # 2. Caso: Tanque Lleno / Zona Muerta del sensor
     if distancia_cm < 20:
         print("D: LLENO | V: 6000L\r\n", end="")
         return
 
-    if altura_agua_cm < 0:
-        altura_agua_cm = 0
+    # 3. Calcular altura limitando a un mínimo de 0 cm
+    altura_agua_cm = max(0, 220 - distancia_cm)
 
-    # 3. Calculate liters (31.4 liters per cm)
-    litros_actuales = (altura_agua_cm * 314) // 10
-    if litros_actuales > 6000:
-        litros_actuales = 6000
+    # 4. Calcular litros (31.4 litros por cm) y limitar a un máximo de 6000L
+    litros_actuales = min(6000, (altura_agua_cm * 314) // 10)
 
-    # 4. Print directly to the console
+    # 5. Imprimir resultado
     print(f"D: {distancia_cm}cm | H: {altura_agua_cm}cm | V: {litros_actuales}L\r\n", end="")
 
 uart = UART(0, baudrate=9600, tx=Pin(0), rx=Pin(1))
