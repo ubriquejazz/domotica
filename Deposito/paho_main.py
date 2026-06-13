@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 from json import load
 from signal import pause
-import sys, serial
+import sys, serial, time
     
 # --- Config ---
 try:
@@ -37,7 +37,7 @@ except Exception as e:
 try:
     ser = serial.Serial(SER_PORT, BAUD_RATE, timeout=1)
     print("Leyendo datos de la RP2040...")
-    
+    count = 0
     while True:
         if ser.in_waiting > 0:
             # Leer la línea que envía la RP2040
