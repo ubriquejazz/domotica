@@ -19,10 +19,10 @@ client_id = "RPi_e0d3738fd6ed"
 
 # Configuración del Puerto Serie (ajusta el puerto según tu Raspberry)
 # Para la RP2040 conectada por USB suele ser /dev/ttyACM0
-SER_PORT = "/dev/ttyACM0" 
+SER_PORT = "/dev/ttyACM0"
 BAUD_RATE = 115200
 
-client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id)
+client = mqtt.Client(client_id)
 if mqtt_user and mqtt_pass:
     client.username_pw_set(mqtt_user, mqtt_pass)
 
