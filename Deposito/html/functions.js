@@ -95,7 +95,7 @@ function startDisconnect() {
 }
 
 function updateTemperature(temperatura) {
-    var tempNum = parseFloat(temperatura);
+    var tempNum = parseFloat(temperatura) % 100;
     if (isNaN(tempNum)) {
         console.error("Invalid value received:", temperatura);
         return; 
