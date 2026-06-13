@@ -6,11 +6,11 @@ WEB_ROOT="/var/www/html"
 echo "window.APP_CONFIG = $(cat config.json);" > config.js
 
 # 2. Move the file into your local project development directory
-mv config.js ./rpi4/
+mv config.js ./html/
 
 # 3. Copy the entire contents of your project folder to the lighttpd directory
 # Change /var/www/html if your lighttpd is serving from a different folder
-sudo cp -r ./rpi4/* "$WEB_ROOT"
+sudo cp -r ./html/* "$WEB_ROOT"
 
 # Apply safe permissions assignments for your web daemon
 sudo chown -R www-data:www-data "$WEB_ROOT"
