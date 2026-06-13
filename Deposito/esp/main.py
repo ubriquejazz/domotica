@@ -1,8 +1,10 @@
 from machine import UART, Pin
 from lcd1602 import LCD
-import utime
+import utime, time
 
-def process_meas(ciclos: int):
+USE_LCD = 0
+
+def percentage(ciclos: int):
     # 1. Calcular distancia base
     distancia_cm = ciclos // 3  
     
@@ -19,9 +21,25 @@ def process_meas(ciclos: int):
 
     # 5. Imprimir resultado
     print(f"D: {distancia_cm}cm | H: {altura_agua_cm}cm | V: {litros_actuales}L\r\n", end="")
+    
+def process(buffer):
+    try:
+        # Decode bytes to a regular string and strip whitespace/newlines
+        line_str = buffer.decode('utf-8').strip()
+        if USE_LCD: lcd.write(0,1, line_str)
+        print(line_str)
+        #ciclos_input = int(line_str)               
+        #percentage(ciclos_input)
+        
+    except ValueError:
+        print(f"[ERROR] Datos corruptos recibidos en UART: {buffer}")
+    except Exception as e:
+        # Cualquier otro error inesperado va solo a la PC
+        print(f"[ERROR] Crítico: {str(e)}")
 
 uart = UART(0, baudrate=9600, tx=Pin(0), rx=Pin(1))
-if LCD:
+
+if USE_LCD:
     lcd = LCD(); # 6 and 7
     lcd.write(0,0, "Cicles:");
 else:
@@ -29,25 +47,16 @@ else:
 
 buffer = b"" # Byte buffer to accumulate incoming characters
 
+
+
+
 while True:
 
     if uart.any():
         incoming_bytes = uart.read()
         buffer += incoming_bytes      
         if b'\n' in buffer:
-            try:
-                # Decode bytes to a regular string and strip whitespace/newlines
-                line_str = buffer.decode('utf-8').strip()
-                if LCD: lcd.write(0,1, line_str)
-                print(line_str)
-                #ciclos_input = int(line_str)               
-                #process_meas(ciclos_input)
-                
-            except ValueError:
-                print(f"[ERROR] Datos corruptos recibidos en UART: {buffer}")
-            except Exception as e:
-                # Cualquier otro error inesperado va solo a la PC
-                print(f"[ERROR] Crítico: {str(e)}")
+            process(buffer)
                 
             # Limpiamos el buffer para la siguiente lectura 
             buffer = b""
