@@ -34,8 +34,6 @@ except Exception as e:
     print(f"Could not connect to MQTT Broker at {mqtt_server}: {e}")
     sys.exit(1)
 
-
-# Abrir puerto serie
 try:
     ser = serial.Serial(SER_PORT, BAUD_RATE, timeout=1)
     print("Leyendo datos de la RP2040...")
