@@ -1,7 +1,6 @@
 import paho.mqtt.client as mqtt
 from json import load
-from signal import pause
-import sys, serial, time
+import sys, serial, time, ujson
     
 # --- Config ---
 try:
