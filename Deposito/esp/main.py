@@ -4,6 +4,7 @@ import utime
 
 USE_LCD = 0
 DBG_MODE = 1
+DBG_SEC = 10 # seconds
 
 def percentage(ciclos: int):
     # 1. Calcular distancia base
@@ -52,7 +53,7 @@ cnt = 0
 while True:
     if DBG_MODE:
         led.toggle()
-        utime.sleep_ms(1000)
+        utime.sleep_ms(SEC * 1000)
         print(cnt)
         cnt += 1
 
