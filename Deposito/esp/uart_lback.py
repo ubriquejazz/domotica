@@ -1,4 +1,5 @@
 from machine import UART, Pin
+from lcd1602 import LCD
 import time
 
 uart = UART(0, baudrate=9600, tx=Pin(0), rx=Pin(1))
@@ -13,6 +14,9 @@ de.off() # active-HIGH
 
 re = Pin(17, Pin.OUT)
 re.off() # active-LOW
+
+lcd = LCD();
+lcd.write(0,0, "Jola");
 
 while True:
     # Option 1: Send a single character using a byte string
