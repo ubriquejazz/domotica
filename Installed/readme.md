@@ -1,19 +1,5 @@
 # Installed Devices
 
-**Mortgage**
-
-- 2 banos - 2 apartamentos
-- ascensor, a reformar
-- hospital, colegios, trabajo
-- meditacion diaria: 20.00h
-
-Numeros:
-- coste + 10% + reforma
-- impuestos (ITP), notaria = 10%
-- aporte1 = 120, monthly = 800
-- aporte2 = venta piso ubrique
-- cuarenta y nueve
-
 **Tavizna**
 
 - Solar
