@@ -2,5 +2,5 @@
     "mqtt_server": "192.168.1.104",
     "mqtt_user": "alumno",
     "mqtt_pass": "clave123",
-    "topic_level": "home/level"
+    "topic_temp": "home/tanque/ciclos"
 }

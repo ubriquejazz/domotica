@@ -77,8 +77,9 @@ function onMessageArrived(message) {
     var topicRecibido = topic.toString();
     if (topicRecibido === window.APP_CONFIG.topic_temp) {
         lectura = JSON.parse(message.payloadString);
-        console.log("Manejando JSON del STM32.");
-        updateTemperature(lectura.temperatura);
+        console.log("Temp y timestamp del RP2040.");
+        document.getElementById("timestamp").innerHTML = lectura.count;
+        updateTemperature(lectura.temp);
     }   
     // TODO: Add more subscribers  
     else {
