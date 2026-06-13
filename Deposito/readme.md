@@ -1,4 +1,4 @@
-# Deposito Water level
+# Water level (ultrasonic)
 
 Primero vemos lo que se instala en el deposito (aguas arribas):
 
@@ -11,9 +11,7 @@ Primero vemos lo que se instala en el deposito (aguas arribas):
 ![](fig/garaje.png)
 
 - Solar panel con regulador MPPT
-  - Flybox + SIM 4G (3 euros/mes)
-  - Step-down 12V/24V a 5V (USB) de DollaTek
-- Modulo DollaTek
+- Step-down 12V/24V a 5V (USB) de DollaTek:
   - **Entrada:** Conectado directamente a los 24V de tu batería.
   - **Salida USB:** hacia la **Raspberry Pi** para darle energía de forma segura.
   - **Salida bornas:** pin **VBUS** (o VSYS) de placa RP2040. El regulador interno se encargará de bajar esos 5V a los 3.3V que necesita para funcionar. 
