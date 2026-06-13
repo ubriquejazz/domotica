@@ -10,7 +10,7 @@ mv config.js ./rpi4/
 
 # 3. Copy the entire contents of your project folder to the lighttpd directory
 # Change /var/www/html if your lighttpd is serving from a different folder
-sudo cp -r ./rpi4/ "$WEB_ROOT"
+sudo cp -r ./rpi4/* "$WEB_ROOT"
 
 # Apply safe permissions assignments for your web daemon
 sudo chown -R www-data:www-data "$WEB_ROOT"

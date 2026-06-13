@@ -100,7 +100,7 @@ function updateTemperature(temperatura) {
         console.error("Invalid value received:", temperatura);
         return; 
     }
-    document.getElementById("temperatura").innerHTML = tempNum + " &ordm;C";
+    document.getElementById("temperatura").innerHTML = tempNum + " %";
     
     // Calculate and round colors using our clean number
     var color_R = Math.round((tempNum / 100.0) * 255);
