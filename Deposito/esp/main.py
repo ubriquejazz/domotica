@@ -1,8 +1,9 @@
 from machine import UART, Pin
 from lcd1602 import LCD
-import utime, time
+import utime
 
 USE_LCD = 0
+DBG_MODE = 1
 
 def percentage(ciclos: int):
     # 1. Calcular distancia base
@@ -38,28 +39,28 @@ def process(buffer):
         print(f"[ERROR] Crítico: {str(e)}")
 
 uart = UART(0, baudrate=9600, tx=Pin(0), rx=Pin(1))
+led = Pin("LED", Pin.OUT)
 
 if USE_LCD:
-    lcd = LCD(); # 6 and 7
-    lcd.write(0,0, "Cicles:");
+    lcd = LCD() # Pin 6 and 7
+    lcd.write(0,0, "Cicles:")
 else:
     print("Cicles:")
 
 buffer = b"" # Byte buffer to accumulate incoming characters
-
-
-
-
+cnt = 0
 while True:
+    if DBG_MODE:
+        led.toggle()
+        utime.sleep_ms(1000)
+        print(cnt)
+        cnt += 1
 
-    if uart.any():
-        incoming_bytes = uart.read()
-        buffer += incoming_bytes      
-        if b'\n' in buffer:
-            process(buffer)
-                
-            # Limpiamos el buffer para la siguiente lectura 
-            buffer = b""
-            
-    # Small sleep to prevent core overheating, keeps polling highly responsive
-    utime.sleep_ms(10)    
+    else:
+        if uart.any():
+            incoming_bytes = uart.read()
+            buffer += incoming_bytes      
+            if b'\n' in buffer:
+                process(buffer)
+                buffer = b""
+        utime.sleep_ms(10)    
