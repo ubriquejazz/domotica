@@ -21,8 +21,12 @@ def process_meas(ciclos: int):
     print(f"D: {distancia_cm}cm | H: {altura_agua_cm}cm | V: {litros_actuales}L\r\n", end="")
 
 uart = UART(0, baudrate=9600, tx=Pin(0), rx=Pin(1))
-lcd = LCD(); # 6 and 7
-lcd.write(0,0, "Cicles:");
+if LCD:
+    lcd = LCD(); # 6 and 7
+    lcd.write(0,0, "Cicles:");
+else:
+    print("Cicles:")
+
 buffer = b"" # Byte buffer to accumulate incoming characters
 
 while True:
@@ -34,9 +38,10 @@ while True:
             try:
                 # Decode bytes to a regular string and strip whitespace/newlines
                 line_str = buffer.decode('utf-8').strip()
-                lcd.write(0,1, line_str);
-                ciclos_input = int(line_str)               
-                process_meas(ciclos_input)
+                if LCD: lcd.write(0,1, line_str)
+                print(line_str)
+                #ciclos_input = int(line_str)               
+                #process_meas(ciclos_input)
                 
             except ValueError:
                 print(f"[ERROR] Datos corruptos recibidos en UART: {buffer}")
