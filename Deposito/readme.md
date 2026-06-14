@@ -9,7 +9,6 @@ Primero vemos lo que se instala en el deposito (aguas arribas):
 
 - Control y envio por MSP430F2013 y RS485
 
-
 ### Implementation (aguas abajo)
 
 ![](fig/garaje.png)
@@ -19,6 +18,18 @@ Primero vemos lo que se instala en el deposito (aguas arribas):
   - **Entrada:** Conectado directamente a los 24V de tu batería.
   - **Salida USB:** hacia la **Raspberry Pi** para darle energía de forma segura.
   - **Salida bornas:** pin **VBUS** (o VSYS) de placa RP2040. El regulador interno se encargará de bajar esos 5V a los 3.3V que necesita para funcionar. 
+
+### MQTT client (paho_main.py on RPi)
+
+```
+crontab -e
+@reboot sleep 30; cd /path_to_code/; /usr/bin/python3 paho_main.py
+```
+
+### MQTT client (html/functions.js on RPi)
+
+Paho is web browser based and uses WebSockets to connect to brokers (you don’t need to deal with the possibility of port 1833 being blocked)
+
 
 ### Comunicaciones
 
