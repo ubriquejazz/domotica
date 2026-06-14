@@ -26,6 +26,14 @@ crontab -e
 @reboot sleep 30; cd /path_to_code/; /usr/bin/python3 paho_main.py
 ```
 
+Suponemos que en esos 30s le ha dado tiempo de iniciar el interfaz WiFi, antes de lanzar los clientes MQTT. Si no, vamos a lanzar el siguiente comando:
+```
+cd /path_to_code; screen
+python3 paho_main.py
+```
+You can detach from the screen session by pressing `Ctrl+a D`. To come back, use `screen -r` 
+
+
 ### MQTT client (html/functions.js on RPi)
 
 Paho is web browser based and uses WebSockets to connect to brokers (you don’t need to deal with the possibility of port 1833 being blocked)
