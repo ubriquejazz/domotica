@@ -3,15 +3,19 @@
 Primero vemos lo que se instala en el deposito (aguas arribas):
 
 - Placa + MPPT (ver [video](https://www.youtube.com/watch?v=pTtVe7P_lIc) en japonés)
+
 - Sensor ultrasonidos AJ-SR04M (R19 horizontal): 
     - Modo [auto](https://www.youtube.com/watch?v=n0hFgR4hYqY), [datasheet](https://www.fabian.com.mt/viewer/42585/pdf.pdf)
 
-### Implementation
+- Control y envio por MSP430F2013 y RS485
+
+
+### Implementation (aguas abajo)
 
 ![](fig/garaje.png)
 
-- Solar panel con regulador MPPT
-- Step-down 12V/24V a 5V (USB) de DollaTek:
+
+- Step-down a 5V (USB) de DollaTek:
   - **Entrada:** Conectado directamente a los 24V de tu batería.
   - **Salida USB:** hacia la **Raspberry Pi** para darle energía de forma segura.
   - **Salida bornas:** pin **VBUS** (o VSYS) de placa RP2040. El regulador interno se encargará de bajar esos 5V a los 3.3V que necesita para funcionar. 
@@ -61,4 +65,5 @@ Opcion 3 - LCD intermedio
 | AJ-SR04M () | R19 horizontal |
 | SR04M-2 | R19 vertical |
 | Rs485 | ![](fig/max485.png) |
-| ![Seedstudio](https://media-cdn.seeedstudio.com/media/catalog/product/cache/bb49d3ec4ee05b6f018e93f896b8a25d/1/-/1-101991041-rs485-750cm-ultrasonic-level-sensor-45font.jpg) | Ver [protocolo](https://how2electronics.com/modbus-rtu-with-raspberry-pi-pico-micropython/) ModBus RTU y script en **esp/modbus.py**  
+| ![Seedstudio](https://media-cdn.seeedstudio.com/media/catalog/product/cache/bb49d3ec4ee05b6f018e93f896b8a25d/1/-/1-101991041-rs485-750cm-ultrasonic-level-sensor-45font.jpg) | Ver [protocolo](https://how2electronics.com/modbus-rtu-with-raspberry-pi-pico-micropython/) ModBus RTU y script en **esp/modbus.py** |
+| ![](msp/esquema.png) | ![](msp/layout.png) |
