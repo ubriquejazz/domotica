@@ -39,8 +39,14 @@ def process(buffer):
         # Cualquier otro error inesperado va solo a la PC
         print(f"[ERROR] Crítico: {str(e)}")
 
-uart = UART(0, baudrate=9600, tx=Pin(0), rx=Pin(1))
+uart = UART(0, baudrate=4800, tx=Pin(0), rx=Pin(1))
 led = Pin("LED", Pin.OUT)
+
+de = Pin(16, Pin.OUT)
+de.off() # active-HIGH
+
+re = Pin(17, Pin.OUT)
+re.off() # active-LOW
 
 if USE_LCD:
     lcd = LCD() # Pin 6 and 7

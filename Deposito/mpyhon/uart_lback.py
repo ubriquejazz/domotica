@@ -2,11 +2,7 @@ from machine import UART, Pin
 from lcd1602 import LCD
 import time
 
-uart = UART(0, baudrate=9600, tx=Pin(0), rx=Pin(1))
-
-# MAX3485
-enable = Pin(18, Pin.OUT)
-enable.off()
+uart = UART(0, baudrate=4800, tx=Pin(0), rx=Pin(1))
 
 # RS485 module
 de = Pin(16, Pin.OUT)
@@ -15,13 +11,12 @@ de.off() # active-HIGH
 re = Pin(17, Pin.OUT)
 re.off() # active-LOW
 
-lcd = LCD();
-lcd.write(0,0, "Jola");
+if (False):
+    lcd = LCD()
+    lcd.write(0,0, "Jola")
 
 while True:
     # Option 1: Send a single character using a byte string
-    enable.on()    
-    
     uart.write(b'H')
     print("Sent: H")
     
@@ -35,5 +30,4 @@ while True:
         print("Received: Nothing (Check your jumper wire!)")
     print("--------------------------------------------")
 
-    enable.off()
     time.sleep(2)
