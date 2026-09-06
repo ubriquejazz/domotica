@@ -1,23 +1,15 @@
-# Water level (ultrasonic)
-
-Primero vemos lo que se instala en el deposito (aguas arribas):
-
-- Placa + MPPT (ver [video](https://www.youtube.com/watch?v=pTtVe7P_lIc) en japonés)
-
-- Sensor ultrasonidos AJ-SR04M (R19 horizontal): 
-    - Modo [auto](https://www.youtube.com/watch?v=n0hFgR4hYqY), [datasheet](https://www.fabian.com.mt/viewer/42585/pdf.pdf)
-
-- Control y envio por MSP430F2013 y RS485
-
-### Implementation (aguas abajo)
+# Water level
 
 ![](fig/garaje.png)
 
-
 - Step-down a 5V (USB) de DollaTek:
   - **Entrada:** Conectado directamente a los 24V de tu batería.
-  - **Salida USB:** hacia la **Raspberry Pi** para darle energía de forma segura.
-  - **Salida bornas:** pin **VBUS** (o VSYS) de placa RP2040. El regulador interno se encargará de bajar esos 5V a los 3.3V que necesita para funcionar. 
+  - **USB:** hacia la **Raspberry Pi** 
+  - **Bornas:** 
+    - RP2040: **VBUS** (o VSYS) de placa, el regulador interno se encargará de bajar esos 5V a los 3.3V 
+    - El controlador PCF8574, el cual es un Expansor de IOs controlado por I2C. 
+
+![Arduino y LCD I2C](https://naylampmechatronics.com/img/cms/Blog/LCD I2C/conexion arduino y LCD I2C.PNG)
 
 ### Comunicaciones
 
@@ -74,10 +66,3 @@ Paho is web browser based and uses WebSockets to connect to brokers (you don’t
 - I2C LCD [library](https://github.com/DIYables/DIYables_MicroPython_LCD_I2C) for ESP32, Pico, etc.
 - MPPT regulador de panel solar de 6V para batería de litio 3,7V 4,2V [CN3791](https://www.laskakit.cz/user/related_files/dse-cn3791.pdf)
 - **Implementation (aguas arriba)**: [codigo](https://github.com/ubriquejazz/micros/blob/master/MSP430/deposito/main_lpm.c) en repositorio de micros/MSP430
-
-
-| Name | Comments |
-|------|----------|
-| AJ-SR04M () | R19 horizontal |
-| SR04M-2 | R19 vertical |
-| Rs485 | 5V or 3V3 versions |
