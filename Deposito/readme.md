@@ -9,7 +9,7 @@
     - RP2040: **VBUS** (o VSYS) de placa, el regulador interno se encargará de bajar esos 5V a los 3.3V 
     - El controlador PCF8574, el cual es un Expansor de IOs controlado por I2C. 
 
-![Arduino y LCD I2C](https://naylampmechatronics.com/img/cms/Blog/LCD I2C/conexion arduino y LCD I2C.PNG)
+![Arduino y LCD I2C](https://naylampmechatronics.com/img/cms/Blog/LCD%20I2C/conexion%20arduino%20y%20LCD%20I2C.PNG)
 
 ### Comunicaciones
 
