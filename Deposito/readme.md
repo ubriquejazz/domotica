@@ -19,26 +19,6 @@ Primero vemos lo que se instala en el deposito (aguas arribas):
   - **Salida USB:** hacia la **Raspberry Pi** para darle energía de forma segura.
   - **Salida bornas:** pin **VBUS** (o VSYS) de placa RP2040. El regulador interno se encargará de bajar esos 5V a los 3.3V que necesita para funcionar. 
 
-### MQTT client (paho_main.py on RPi)
-
-```
-crontab -e
-@reboot sleep 30; cd /path_to_code/; /usr/bin/python3 paho_main.py
-```
-
-Suponemos que en esos 30s le ha dado tiempo de iniciar el interfaz WiFi, antes de lanzar los clientes MQTT. Si no, vamos a lanzar el siguiente comando:
-```
-cd /path_to_code; screen
-python3 paho_main.py
-```
-You can detach from the screen session by pressing `Ctrl+a D`. To come back, use `screen -r` 
-
-
-### MQTT client (html/functions.js on RPi)
-
-Paho is web browser based and uses WebSockets to connect to brokers (you don’t need to deal with the possibility of port 1833 being blocked)
-
-
 ### Comunicaciones
 
 | Aguas arriba (20 mA) | Aguas abajo (200 mA) |
@@ -53,13 +33,13 @@ Paho is web browser based and uses WebSockets to connect to brokers (you don’t
 | RS485 transceiver | 0,5 W |
 | DollaTek buck converter | 0,1 W |
 | RP2040 + Pantalla LCD | 5V * 0.2A = 1W |
-| Raspberry Pi4 | 5V * 2.0A = 10W |
-| Router Flybox | 12V * 1A = 12W |
-|  |  |
 | Baterias tudor (Pb Acido) | Tudor 24V @ 90Ah / 2= 1080 Wh |
-| Total 24W | 40h de autonomia |
 
 ### Alternatives
+
+Opcion 0 - Sin raspberry ni WiFi pero con LCD
+
+- RP040 para poder mostrar el nivel en local
 
 Opcion 1 - La raspberry recibe el mensaje UART y lo muestra en Javascript
 
@@ -67,10 +47,25 @@ Opcion 2 - home-assistant
 
 - Este [esphome](https://esphome.io/components/sensor/jsn_sr04t/) es para el ultrasonido SR04M-2
 
-Opcion 3 - LCD intermedio 
+### Opcion con dos raspberries + WiFi
 
-- RP040 para poder mostrar el nivel en un LCD
+#### MQTT client (paho_main.py on RPi)
 
+```
+crontab -e
+@reboot sleep 30; cd /path_to_code/; /usr/bin/python3 paho_main.py
+```
+
+Suponemos que en esos 30s le ha dado tiempo de iniciar el interfaz WiFi, antes de lanzar los clientes MQTT. Si no, vamos a lanzar el siguiente comando:
+```
+cd /path_to_code; screen
+python3 paho_main.py
+```
+You can detach from the screen session by pressing `Ctrl+a D`. To come back, use `screen -r` 
+
+#### MQTT client (html/functions.js on RPi)
+
+Paho is web browser based and uses WebSockets to connect to brokers (you don’t need to deal with the possibility of port 1833 being blocked)
 
 
 ### Referencias
@@ -85,4 +80,4 @@ Opcion 3 - LCD intermedio
 |------|----------|
 | AJ-SR04M () | R19 horizontal |
 | SR04M-2 | R19 vertical |
-| Rs485 | ![](fig/max485.png) |
+| Rs485 | 5V or 3V3 versions |
