@@ -29,7 +29,31 @@ The TPS63060 regulator takes the variable battery voltage (2.8V to 4.2V) and sea
 |------|----------|
 | AJ-SR04M () | R19 horizontal |
 | SR04M-2 | R19 vertical |
+| RCWL-1655 | R7 horizontal |
+
+### RCWL-1655
+
+Trig high for more than 10 us; Echo is proportional to the distance.
+
+Baudrate = 9600 N 8 1. The PC send a command:
+- 0xF1, after a while the module return its version
+- 0xA0, after a while the module return the distance in mm
+
+Write 0x01 to the I2C address 0x57, and wait for 100ms (maximum ranging time)	
+- distance_mm = (High << 16) + (Medium << 8) + Low
+
+|             | Min  | Typ  | Max  |      |
+| ----------- | ---- | ---- | ---- | ---- |
+| Voltage     | 2.8  |      | 5.5  | V    |
+| Current     |      | 3.5  |      | mA   |
+| Distance    | 20   |      | 500  | cm   |
+| Angle       |      | +-20 |      | §    |
+| Work        |      | 40   |      | KHz  |
+| Sampling    |      | 50   |      | ms   |
+| Temperature | -10  |      | 60   | §    |
 
 References:
 - [Modes](https://www.youtube.com/watch?v=n0hFgR4hYqY)
 - [Datasheet](https://www.fabian.com.mt/viewer/42585/pdf.pdf)
+- [Electroya](https://www.electroya.com/producto/aj-sr04m-nueva-version-modulo-ultrasonico-impermeable-3-55-v-con-sonda/)
+
