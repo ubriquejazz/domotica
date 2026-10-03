@@ -2,7 +2,7 @@
 
 # Check if a URL was provided
 if [ -z "$1" ]; then
-    echo "Usage: ytb2mp3 <youtube-url>"
+    echo "Usage: $0 <youtube-url>"
     exit 1
 fi
 
