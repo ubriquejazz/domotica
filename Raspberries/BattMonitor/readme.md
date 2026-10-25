@@ -51,22 +51,20 @@ A parte de la consola de Javascript, se ha creado una seccion con los logs mas r
 
 Se utilizará un broker local para publicar y suscribir mensajes MQTT.
 
-Para la visualización de los datos de los dos nodos descritos, se despliega un servidor con **Node-RED**
+Para la visualización de los datos de los dos nodos descritos, se despliega un servidor web LigHTTP
 
 - Publicación y admisión de suscripción a datos de los nodos MQTT (formato JSON)
   - **Nodo 0**: topic_relay, topic_threshold
-  - **Nodos 1 y 2**: topic_esp, topic_disco
-- Información de los sensores y estados de las entradas y salidas digitales. Los datos se representarán de forma gráfica,  usando un 'led' virtual para visualizar el estado del rele,
-  -  ‘gauges’ para la visualización de los valores actuales de cada sensor 
-  -  ‘charts’ para la visualización histórica de  los sensores de temperatura y humedad proporcionados por el nodo 2 (últimas 24 horas)
+  - **Nodos 1**: topic_esp
+- Información de los sensores y estados de las entradas y salidas digitales. Los datos se representarán de forma gráfica,  usando un 'led' virtual para visualizar el estado del rele.
 
-**LigHTTP**
+**LigHTTP/RPi4**
 
-A parte de Node-Red, la RPi4 tendra otro servidor web local que corre, un cliente de javascript embebido en HTML y se subscribe a los topics necesarios
+Corre un cliente de javascript embebido en HTML que se subscribe a los topics necesarios
 
-En la carèta **claves** se incluye el fichero mosquitto.conf que habilita el protocolo websockets (puerto 8083), seguridad basada en (user + pwd) asi como los fuentes del servidor
+En la carèta **claves** se incluye el fichero **mosquitto.conf** que habilita el protocolo websockets (puerto 8083), seguridad basada en (user + pwd) asi como los fuentes del servidor
 
-* Los ficheros .js y .css hay que copiarlos a la carpeta /var/www/html de la RPi4
+* Los ficheros .js y .css hay que copiarlos a la carpeta /var/www/html
 
 - Una vez listo, reiniciamos el servicio con `service lighttpd force-reload`
 
