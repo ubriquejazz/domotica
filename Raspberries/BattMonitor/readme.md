@@ -51,7 +51,7 @@ A parte de la consola de Javascript, se ha creado una seccion con los logs mas r
 
 Se utilizará un broker local para publicar y suscribir mensajes MQTT.
 
-Para la visualización de los datos de los dos nodos descritos, se despliega un servidor web LigHTTP
+Para la visualización de los datos de los dos nodos descritos, se despliega un servidor NodeRED
 
 - Publicación y admisión de suscripción a datos de los nodos MQTT (formato JSON)
   - **Nodo 0**: topic_relay, topic_threshold
