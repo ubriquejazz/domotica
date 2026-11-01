@@ -1,24 +1,45 @@
-# MANDO A DISTANCIA
+## 5.1 Overview
 
-The remote control incorporates 4 buttons and 4 positions slide-switch that ranges from A to D.
-To control the Coati alarm this switch has to be in the "A" position (orange background). Simply follow this orange track for operating in 1(instant alarm), 2(delayed alarm), 3(chimie) and 4(disarm) modes.
+The remote control is equipped with four buttons and a four-position slide switch (A–D).
 
-![image](COATI_12524.jpg)
+**Important:** The slide switch must always remain in position **A** (orange background) for the remote control to operate the Coati alarm correctly.
 
-## Modes
+Positions B, C and D are not used for this alarm system and should be ignored.
 
-| Remote button | Alarm status |
-|-------------- | ------------ |
-| Closed Lock #1 | Instant alarm |
-| Closed Lock #2 | Delayed alarm |
-| Bell | Chimie |
-| Open Lock | Disarm/Learn(press and hold for 3 seconds)
+All remote control functions are accessed through the four buttons, following the orange track on the remote control.
 
-## Emitting the ID code
+## 5.2 Operating Modes
 
-In order to communicate with the Coati alarm, it is essential that the same ID code is used between receiver and xmitter. Pressing the "Open Lock" button for 3 seconds will emit the ID code to the Coati alarm.
+With the slide switch in position A, the buttons operate as follows:
 
-## Led indication
+| Remote control button | Alarm function |
+|---|---|
+| Closed lock 1 | Instant alarm mode |
+| Closed lock 2 | Delayed alarm mode |
+| Bell | Chime mode |
+| Open lock | Disarm |
 
-1. The LED will iluminate each time the button is pressed
-1. The length of the "Open Lock" button may decide what kind of RF signal will be sent. Pressing within 3 seconds a disarm mode will be sent. Pressing for more than 3 seconds until the LED extinguishes,a code learning mode will be sent.
+## 5.3 Registering the Remote Control
+
+The remote control must share the same ID code as the Coati central unit to communicate with the alarm.
+
+To register the remote control:
+
+1. Set the remote control slide switch to position A.
+2. Set the central unit to ID learning mode (`security code + *`).
+3. Press and hold the **Open Lock** button for more than three seconds.
+4. The remote control transmits its ID code to the central unit.
+5. A long beep from the central unit confirms successful registration.
+
+## 5.4 LED Indication and Button Operation
+
+The remote control LED illuminates whenever a button is pressed.
+
+The duration of the **Open Lock** button press determines which radio signal is transmitted:
+
+| Button press duration | Function |
+|---|---|
+| Less than 3 seconds | Disarm command |
+| More than 3 seconds | ID-learning signal |
+
+When the Open Lock button is held for more than three seconds, the LED extinguishes and the remote control transmits its ID code.
