@@ -1,59 +1,144 @@
-# CENTRALITA
+# 2. Central Control Unit
 
-The alarm is designed to protect your home, serving as a basic alarm system and entry enunciator as well. Upon it receives radio signal from the associated transmitter a 110 dB alarm sound or chimie alert will be emitted.
+## 2.1 Initial Setup
 
-![image](COATI_12524.jpg)
+The central unit uses a four-digit security code to access its functions. The factory default code is:
 
-## Modes
+**1234**
 
-| security code	| mode key | mode status |
-| ------------- | -------- | ------------|
-| 1234 | 1 | instant alarm |
-| 1234 | 2 | delayed alarm |
-| 1234 | 3 | chimie |
-| 1234 | 4 | disarm alarm/chimie |
-| 1234 | 6 | new security code |
-| 1234 | 8 | activate key tone |
-| 1234 | * | id learning |
-| 1234 | # | id clearence |
+To start the system:
 
-## Starting up
+1. Insert the batteries.
+2. The Status LED should illuminate for approximately one second and then turn off, confirming that the unit has powered up correctly.
+3. If no sensor IDs have been registered, the Status LED will flash every three seconds.
 
-The alarm is capable of memorizing up to 12 ID codes. For initial operation the alarm does not memorize any ID code, so its Status LED will flash every 3 seconds. It stops flashing until the code learning process has been taken place.
+The alarm will stop this periodic flashing once at least one sensor ID has been learned.
 
-Upon completion of batteries insertion, the Status LED will light up for 1 second and extinguish confirming the alarma has initiated properly. Four digit security code [1 2 3 4] has been set as the default security code.
+## 2.2 Keypad Commands
 
-## Learning the ID code
+All functions are accessed by entering the four-digit security code followed by the corresponding mode key.
 
-Press 4-digit security code and then *mode key to enter to the code learning mode. Both Status and Charge LEDs will be flahing. The alarm has 30 seconds to learn the ID code from the transmitter. Once code learning is successful, the alarm will emit a long beep in response and revert to the disarm mode automatically. However if code learning has not been completed in 30 seconds, the alarm will still revert to the disarm mode automatically with the Status LED flashing 4 time rapidly. During code learning mode, any input or activation will be ignored.
+| Keypad sequence | Function |
+|---|---|
+| `1234 + 1` | Instant alarm mode |
+| `1234 + 2` | Delayed alarm mode |
+| `1234 + 3` | Chime mode |
+| `1234 + 4` | Disarm alarm / chime |
+| `1234 + 6` | Change security code |
+| `1234 + 8` | Enable keypad tones |
+| `1234 + *` | Learn sensor IDs |
+| `1234 + #` | Clear sensor IDs |
 
-## Led indication (sensor)
+**Important:** The default security code should be changed during initial setup.
 
-| LED indication | Status |
-| -------------- | ------ |
-| illuminating steadily | the device is emitting radio singal |
-| flashing every 30 seconds| low battery |
+## 2.3 Registering Wireless Sensors
 
-## Cleaning out the ID codes
+The central unit can store up to 12 sensor IDs. Each wireless sensor must be registered before it can activate the alarm.
 
-Press 4-digit security code and then #mode key to enter to the clearance mode. Both Status and Charge LEDs will illuminate steadly.
+To register a sensor:
 
-## Arming the alarm
+1. Enter the security code followed by `*`.
+2. The Status and Charge LEDs will start flashing, indicating that the unit is in learning mode.
+3. Activate the sensor's ID transmission procedure (see the relevant sensor section).
+4. When registration is successful, the central unit emits a long beep.
+5. The unit automatically returns to disarmed mode.
 
-**Instant mode:** arm the alarm by pressing 4-digit security code and the 1mode key. There will be 15 seconds before the alarm is armed. The delay allows you to leave the house without triggering any sensor. During this time the alarm will be beeping and the Status LED will flash. The alarm will enter to the instant arm mode after expiring the 15 seconds delay.
+The learning procedure has a **30-second timeout**. If no sensor ID is received within this period:
 
-**Delayed mode:** arm the alarm by pressing 4-digit security code and the 2mode key. There will be 15 seconds before the alarm is armed. The delay allows you to leave the house without triggering any sensor. During this time the alarm will be beeping and the Status LED will flash. The alarm will enter to the instant arm mode after expiring the 15 seconds delay.
+- The unit automatically exits learning mode.
+- The Status LED flashes four times rapidly.
 
-## Trigger
+During learning mode, normal keypad inputs and sensor activations are ignored.
 
-When alarm is activated it will sound 30s and be silent for 10s. Such a cycle will be repeated for 10 times. Once the alarm is activated, there won't be any sound until other 15 seconds delay. Note: set the alarm to the chimie mode when you are at home to avoid harming from frequent activation (3mode key).
+## 2.4 Clearing Registered Sensor IDs
 
-## Deactivating the alarm
+To erase the registered sensor IDs:
 
-Disarm the alarm by pressing your 4-digit security code and then 4mode key. Any alarm activation or received radio signal will be ignored.
+1. Enter the security code followed by `#`.
+2. Both the Status and Charge LEDs will illuminate continuously.
 
-## Led indication (centralita)
+The original documentation does not specify a separate confirmation procedure after clearing the IDs.
 
-When entering the 4-digit security code + mode key, the alarm will respond with a long beep with the Status LED iluminated. If a incorrect code is entered the Charge LED will flash and beep 3 times. Three consecutive errors will disable the keypad for 30 seconds.
+## 2.5 Arming the Alarm
 
-Note: If input has not been entered entirely, new input doesn't ocurr after 10 seconds.
+The system provides two alarm modes.
+
+### Instant alarm mode
+
+1. Enter the security code followed by `1`.
+2. The central unit starts a 5-second exit countdown.
+3. During the countdown:
+   - The unit emits audible beeps.
+   - The Status LED flashes.
+4. After 5 seconds, the alarm becomes armed.
+
+### Delayed alarm mode
+
+1. Enter the security code followed by `2`.
+2. The central unit starts a 15-second exit countdown.
+3. During the countdown:
+   - The unit emits audible beeps.
+   - The Status LED flashes.
+4. After 15 seconds, the alarm becomes armed.
+
+## 2.6 Chime Mode
+
+Chime mode allows the system to operate while occupants are inside the property.
+
+When a registered sensor is activated, the central unit produces a chime instead of triggering the security alarm.
+
+To activate chime mode:
+
+1. Enter the security code followed by `3`.
+
+This mode is recommended when the property is occupied, as it avoids repeated full alarm activations.
+
+## 2.7 Disarming the System
+
+To disarm the alarm:
+
+1. Enter the security code followed by `4`.
+
+Once disarmed:
+
+- Alarm activation is disabled.
+- Signals received from registered sensors are ignored.
+
+## 2.8 Alarm Activation
+
+When the alarm is triggered, the central unit operates according to the following cycle:
+
+- Alarm sounds for 30 seconds.
+- Alarm remains silent for 10 seconds.
+- This cycle repeats up to 10 times.
+
+## 2.9 Changing the Security Code
+
+The security code can be changed using the following keypad command:
+
+`Current security code + 6`
+
+The original documentation does not provide the subsequent steps for entering and confirming the new code.
+
+## 2.10 Keypad and LED Indications
+
+When a valid security code and mode key are entered:
+- The central unit emits a long beep.
+- The Status LED illuminates.
+
+When an incorrect security code is entered:
+- The Charge LED flashes.
+- The unit emits three beeps.
+
+After three consecutive incorrect attempts, the keypad is disabled for 30 seconds.
+
+If keypad entry is not completed within 10 seconds, the current input is cancelled.
+
+# 2.11 LED Indications
+
+| LED behaviour | Meaning |
+|---|---|
+| Illuminated continuously | The device is transmitting a radio signal. |
+| Flashes every 30 seconds | Low battery. |
+
+These indications are sensor-related. The original documentation does not specify whether they apply identically to both sensor models
