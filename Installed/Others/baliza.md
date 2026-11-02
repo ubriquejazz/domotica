@@ -8,6 +8,6 @@ This device is equipped with digital connectivity via the Telefonica operators n
 
 ## Installation
 
-![](install.png)
+![](fig/install.png)
 
 - IMEI: 
